@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>3-Card Hold'em — Single Room</title>
-<script src="/socket.io/socket.io.js"></script>
+<script src="/env.js"></script>
+<script src="https://cdn.socket.io/4.7.4/socket.io.min.js" crossorigin="anonymous"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -482,7 +483,9 @@ const POS = [
 
 const BIG_BLIND = 100;
 
-const socket = io();
+const socket = io(window.__SOCKET_URL__ || undefined, {
+  transports: ['websocket', 'polling'],
+});
 let myId    = null;
 let gState  = null;
 

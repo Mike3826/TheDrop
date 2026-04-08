@@ -6,7 +6,17 @@ const { Server } = require('socket.io');
 
 const app    = express();
 const server = http.createServer(app);
-const io     = new Server(server);
+const io     = new Server(server, {
+  cors: { origin: true, methods: ['GET', 'POST'] },
+});
+
+app.get('/env.js', (_req, res) => {
+  const url = process.env.SOCKET_SERVER_URL || '';
+  res
+    .type('application/javascript')
+    .set('Cache-Control', 'private, max-age=60')
+    .send(`window.__SOCKET_URL__=${JSON.stringify(url)};`);
+});
 
 app.use(express.static('public'));
 
@@ -670,7 +680,11 @@ io.on('connection', socket => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`Poker server running → http://localhost:${PORT}`);
-});
+const PORT = Number(process.env.PORT) || 3000;
+if (process.env.VERCEL) {
+  module.exports = app;
+} else {
+  server.listen(PORT, () => {
+    console.log(`Poker server running → http://localhost:${PORT}`);
+  });
+}
