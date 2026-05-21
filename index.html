@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>All In Max Out — Vegas Infinite</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* Vegas Infinite Brand Colors */
+:root{
+  --vi-pink:#fb009f;
+  --vi-red:#f8050e;
+  --vi-orange:#fc6b23;
+  --vi-cream:#fbf4db;
+  --vi-yellow:#fde054;
+  --vi-amber:#f59f41;
+  --vi-purple:#9500c6;
+  --vi-blue:#173dff;
+  --vi-cyan:#2afeff;
+  --vi-black:#050508;
+  --vi-dark:#0c0c14;
+  --vi-panel:#12121e;
+  --vi-panel2:#1a1a2e;
+}
+
+body{
+  background:var(--vi-black);
+  color:var(--vi-cream);
+  font-family:'Barlow',sans-serif;
+  min-height:100vh;
+  font-size:16px;
+}
+
+.felt{
+  min-height:100vh;
+  padding:10px 14px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(149,0,198,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 10%, rgba(23,61,255,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(42,254,255,0.03) 0%, transparent 70%),
+    var(--vi-black);
+}
+
+.loading{display:flex;align-items:center;justify-content:center;height:100vh;font-size:22px;color:var(--vi-cyan);letter-spacing:4px;font-family:'Barlow Condensed',sans-serif;font-weight:900}
+
+/* ── Header ── */
+.header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 0}
+.header-left{display:flex;align-items:center;gap:10px;min-width:120px}
+.header-right{min-width:200px;display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-wrap:wrap}
+
+h1{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-size:clamp(24px,3.5vw,40px);
+  letter-spacing:6px;
+  text-transform:uppercase;
+  text-align:center;
+  background:linear-gradient(135deg,var(--vi-orange),var(--vi-yellow),var(--vi-amber));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.hand-num{font-size:14px;color:var(--vi-amber);letter-spacing:2px;font-weight:600;text-transform:uppercase}
+.phase-label{text-align:center;font-size:14px;letter-spacing:2px;color:var(--vi-cyan);text-transform:uppercase;min-height:16px;opacity:0.8}
+
+.round-pips{display:flex;gap:6px}
+.pip{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15)}
+.pip-done{background:var(--vi-amber);border-color:var(--vi-amber)}
+.pip-cur{background:var(--vi-cyan);border-color:var(--vi-cyan);box-shadow:0 0 6px var(--vi-cyan)}
+
+.mute-btn{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:6px;padding:5px 10px;font-size:15px;cursor:pointer;color:var(--vi-cream);
+  transition:background 0.15s;
+}
+.mute-btn:hover{background:rgba(255,255,255,0.12)}
+.hdr-btn{
+  background:rgba(252,107,35,0.12);
+  border:1px solid rgba(252,107,35,0.4);
+  border-radius:6px;padding:6px 14px;
+  font-size:13px;font-weight:700;
+  font-family:'Barlow Condensed',sans-serif;
+  color:var(--vi-orange);cursor:pointer;
+  letter-spacing:1px;text-transform:uppercase;
+  transition:background 0.15s,border-color 0.15s;
+}
+.hdr-btn:hover{background:rgba(252,107,35,0.28);border-color:rgba(252,107,35,0.7);color:var(--vi-yellow)}
+
+.info-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.92);
+  display:flex;align-items:center;justify-content:center;
+  z-index:300;
+}
+.info-modal{
+  background:#0c0c18;
+  border:2px solid rgba(252,107,35,0.5);
+  border-radius:16px;
+  width:min(640px,96vw);
+  max-height:86vh;
+  display:flex;flex-direction:column;
+  box-shadow:0 0 60px rgba(252,107,35,0.15),0 0 120px rgba(149,0,198,0.1);
+}
+.info-modal-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 24px 14px;
+  border-bottom:1px solid rgba(252,107,35,0.2);
+  flex-shrink:0;
+}
+.info-modal-hdr h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:24px;font-weight:900;
+  color:var(--vi-orange);letter-spacing:3px;text-transform:uppercase;
+}
+.close-btn{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:6px;padding:5px 12px;
+  font-size:16px;color:var(--vi-cream);cursor:pointer;
+  transition:background 0.15s;font-family:inherit;
+}
+.close-btn:hover{background:rgba(255,255,255,0.15)}
+.info-modal-body{
+  overflow-y:auto;padding:20px 24px 24px;
+  display:flex;flex-direction:column;gap:20px;
+  scrollbar-width:thin;scrollbar-color:rgba(252,107,35,0.2) transparent;
+}
+.rule-block h3{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:17px;font-weight:900;
+  color:var(--vi-cyan);letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:8px;
+}
+.rule-block p{font-size:14px;color:var(--vi-cream);line-height:1.7;margin-bottom:6px;opacity:0.9}
+.rule-block ul{padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.rule-block li{font-size:14px;color:var(--vi-cream);line-height:1.6;opacity:0.9}
+.rule-block strong{color:var(--vi-yellow);font-weight:700}
+
+.royalty-table{display:flex;flex-direction:column;gap:3px;border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden}
+.royalty-hdr{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 16px;
+  background:rgba(255,255,255,0.05);
+  font-size:11px;color:var(--vi-amber);
+  font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  font-family:'Barlow Condensed',sans-serif;
+}
+.royalty-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 16px;
+  border-top:1px solid rgba(255,255,255,0.05);
+  font-size:15px;
+}
+.royalty-row .rhand{color:var(--vi-cream);font-weight:600}
+.royalty-row .rpay{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;letter-spacing:1px}
+.r-mega{background:rgba(245,209,106,0.1)}.r-mega .rpay{color:var(--vi-yellow)}
+.r-high{background:rgba(252,107,35,0.08)}.r-high .rpay{color:var(--vi-orange)}
+.r-mid{background:rgba(251,0,159,0.08)}.r-mid .rpay{color:var(--vi-pink)}
+.r-low{background:rgba(42,254,255,0.06)}.r-low .rpay{color:var(--vi-cyan)}
+.royalty-note{font-size:13px;color:rgba(251,244,219,0.6);font-style:italic;margin-top:4px}
+
+/* ── Table Grid ── */
+.table-grid{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  grid-template-rows:auto 1fr auto;
+  gap:12px;
+  align-items:center;
+  justify-items:center;
+  width:100%;
+  max-width:1020px;
+  margin:0 auto;
+}
+.grid-top{grid-column:1/-1;grid-row:1;display:flex;justify-content:center}
+.grid-left{grid-column:1;grid-row:2;display:flex;align-items:center}
+.grid-right{grid-column:3;grid-row:2;display:flex;align-items:center}
+.grid-bottom{grid-column:1/-1;grid-row:3;display:flex;justify-content:center;width:100%}
+
+/* ── Poker Table ── */
+.poker-table{
+  grid-column:2;grid-row:2;
+  position:relative;
+  width:min(500px,56vw);
+  height:min(500px,56vw);
+  border-radius:40px;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 30% 30%, rgba(23,61,255,0.25) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 70%, rgba(149,0,198,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, #1a0a2e 0%, #0c0616 100%);
+  box-shadow:
+    0 0 0 2px rgba(252,107,35,0.4),
+    0 0 0 5px rgba(0,0,0,0.8),
+    0 0 0 8px rgba(245,159,65,0.2),
+    0 0 0 12px rgba(0,0,0,0.9),
+    0 0 60px rgba(149,0,198,0.3),
+    0 0 100px rgba(23,61,255,0.2);
+}
+
+.poker-table::before{
+  content:'';position:absolute;inset:0;border-radius:40px;
+  background:repeating-linear-gradient(0deg,rgba(42,254,255,0.015) 0,rgba(42,254,255,0.015) 1px,transparent 1px,transparent 8px),
+             repeating-linear-gradient(90deg,rgba(42,254,255,0.015) 0,rgba(42,254,255,0.015) 1px,transparent 1px,transparent 8px);
+  pointer-events:none;z-index:0;
+}
+
+/* ── Table Center ── */
+.table-center{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:62%;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:2;
+}
+
+.pot-box{
+  background:rgba(0,0,0,0.6);
+  border:1px solid rgba(252,107,35,0.4);
+  border-radius:8px;padding:5px 16px;
+  display:flex;align-items:center;gap:8px;
+}
+.pot-label{font-size:12px;color:var(--vi-orange);letter-spacing:3px;text-transform:uppercase;font-weight:700}
+.pot-amt{font-size:28px;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--vi-yellow)}
+
+.community-area{display:flex;align-items:flex-start;gap:10px;width:100%}
+.mystery-stack{text-align:center;flex-shrink:0}
+.comm-stack{flex:1}
+.zone-lbl{font-size:11px;letter-spacing:3px;color:var(--vi-cyan);text-transform:uppercase;margin-bottom:5px;text-align:center;font-weight:700}
+.comm-row{justify-content:center;flex-wrap:wrap;gap:3px}
+.empty-comm{color:rgba(42,254,255,0.3);font-size:18px;line-height:50px}
+
+.card-face-down{
+  width:54px;height:74px;border-radius:6px;
+  background:linear-gradient(135deg,#0c0c20,#1a0a2e,#0c1040);
+  border:2px solid rgba(42,254,255,0.4);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:20px;color:rgba(42,254,255,0.3);
+  font-family:'Barlow Condensed',sans-serif;font-weight:900;
+  letter-spacing:1px;
+}
+.card-face-down::after{content:'VI'}
+
+/* ── Bid list ── */
+.bid-list{display:flex;flex-direction:column;gap:2px;width:100%}
+.bid-row{display:flex;align-items:center;gap:5px;font-size:14px;padding:3px 7px;border-radius:4px;background:rgba(0,0,0,0.4);border:1px solid transparent}
+.bid-done{opacity:0.4}
+.bid-cur{background:rgba(252,107,35,0.12);border-color:rgba(252,107,35,0.3)}
+.bid-who{flex:1;color:var(--vi-cream)}
+.bid-amt{color:var(--vi-yellow);font-weight:700;font-family:'Barlow Condensed',sans-serif;font-size:17px}
+.aimo-pill{background:var(--vi-pink);color:#fff;font-size:11px;padding:2px 5px;border-radius:3px;font-weight:900;letter-spacing:1px}
+.pick-btns{display:flex;gap:6px;justify-content:center;margin-top:4px}
+
+/* ── Seats ── */
+.seat{display:flex;flex-direction:column;align-items:center;gap:6px}
+
+/* Human seat — horizontal strip below table */
+.seat-0{
+  position:static;
+  flex-direction:row;align-items:center;gap:14px;
+  background:rgba(23,61,255,0.08);
+  border:1px solid rgba(23,61,255,0.4);
+  border-radius:10px;padding:10px 16px;
+  max-width:720px;width:100%;
+}
+
+/* AI external panels */
+.seat-1,.seat-2,.seat-3{
+  position:static;
+  background:rgba(12,12,20,0.85);
+  border:1px solid rgba(252,107,35,0.2);
+  border-radius:10px;padding:9px 12px;
+  max-width:190px;
+}
+.seat-2{max-width:520px}
+
+.seat-elim{opacity:0.3;pointer-events:none}
+.seat-active{border-color:var(--vi-cyan) !important;box-shadow:0 0 16px rgba(42,254,255,0.25)}
+
+.seat-info{
+  background:rgba(0,0,0,0.4);
+  border:1px solid rgba(245,159,65,0.2);
+  border-radius:8px;padding:6px 10px;
+  text-align:center;min-width:82px;
+}
+.seat-0 .seat-info{border-color:rgba(23,61,255,0.4);background:rgba(23,61,255,0.1)}
+.seat-1 .seat-info,.seat-2 .seat-info,.seat-3 .seat-info{background:transparent;border:none;padding:0}
+
+.seat-name{
+  font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+  color:var(--vi-amber);display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:3px;
+  font-family:'Barlow Condensed',sans-serif;
+}
+.dealer-chip{
+  width:17px;height:17px;border-radius:50%;
+  background:linear-gradient(135deg,var(--vi-yellow),var(--vi-amber));
+  color:#000;font-size:8px;font-weight:900;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;
+}
+.elim-tag{font-size:11px;background:var(--vi-red);color:#fff;padding:1px 5px;border-radius:3px;font-weight:700;letter-spacing:1px}
+.seat-bank{
+  font-size:20px;font-weight:900;
+  font-family:'Barlow Condensed',sans-serif;
+  color:#4dff9a;margin-bottom:2px;letter-spacing:1px;
+}
+.seat-bid{font-size:14px;color:var(--vi-yellow);display:flex;align-items:center;gap:3px;justify-content:center;margin-top:2px;font-weight:700}
+.thinking-dot{font-size:14px;color:var(--vi-cyan);animation:blink 1s infinite;letter-spacing:2px}
+@keyframes blink{0%,100%{opacity:0.2}50%{opacity:1}}
+
+/* ── Cards ── */
+.card-row{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.human-cards{gap:6px}
+.compact{gap:2px}
+
+.card{
+  border-radius:6px;
+  background:#ffffff;
+  border:2px solid #ddd;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-weight:900;line-height:1;user-select:none;flex-shrink:0;cursor:default;
+  transition:transform 0.12s,border-color 0.12s,box-shadow 0.12s;
+  position:relative;
+}
+.card .cr{margin-bottom:1px;font-family:'Barlow Condensed',sans-serif}
+.card .cs{font-family:serif}
+.card.red{color:#cc0000}
+.card.black{color:#111}
+/* Make suit and rank more visible with larger proportional font */
+.card .cr{font-size:inherit}
+.card .cs{font-size:calc(var(--cs-size, 1em) * 1.1)}
+
+.card.card-back{
+  background:linear-gradient(135deg,#0c0c20 0%,#1a0a35 40%,#0c1540 100%);
+  border-color:rgba(42,254,255,0.5);
+}
+.card.selected{
+  border:2px solid var(--vi-cyan);
+  box-shadow:0 0 16px rgba(42,254,255,0.6);
+  transform:translateY(-6px);
+}
+.card.clickable{cursor:pointer}
+.card.clickable:hover{
+  transform:translateY(-8px);
+  border-color:var(--vi-yellow);
+  box-shadow:0 6px 20px rgba(253,224,84,0.4);
+}
+
+/* Seat arrangements at showdown */
+.seat-arranged{display:flex;flex-direction:column;gap:3px;align-items:flex-start}
+.seat-arr-row{display:flex;align-items:center;gap:5px}
+.seat-arr-label{font-size:12px;color:var(--vi-amber);min-width:60px;text-align:right;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+
+/* ── Panels row ── */
+.panels-row{
+  display:flex;gap:12px;flex-wrap:wrap;
+  max-width:1020px;margin:0 auto;width:100%;
+}
+
+/* ── Bid panel ── */
+.bid-panel{
+  background:rgba(12,12,20,0.9);
+  border:1px solid rgba(42,254,255,0.25);
+  border-radius:10px;padding:14px 16px;
+  display:flex;flex-direction:column;gap:10px;
+  flex:1;min-width:260px;max-width:420px;
+}
+.bid-panel-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;font-weight:900;color:var(--vi-cyan);
+  letter-spacing:2px;text-transform:uppercase;
+}
+.slider-row{display:flex;align-items:center;gap:8px}
+.slider-row label{font-size:14px;color:var(--vi-cream);flex-shrink:0;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.slider-row input[type=range]{flex:1;accent-color:var(--vi-orange)}
+.slider-val{font-size:20px;color:var(--vi-yellow);font-weight:900;min-width:38px;text-align:right;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px}
+
+.aimo-row{
+  display:flex;align-items:center;gap:8px;padding:8px 12px;
+  background:rgba(251,0,159,0.1);
+  border:1px solid rgba(251,0,159,0.35);
+  border-radius:7px;cursor:pointer;transition:background 0.15s;
+}
+.aimo-row:hover{background:rgba(251,0,159,0.2)}
+.aimo-on{background:rgba(251,0,159,0.3) !important;border-color:var(--vi-pink) !important}
+.aimo-label{
+  font-size:16px;color:var(--vi-pink);font-weight:900;
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;text-transform:uppercase;
+}
+.aimo-sub{font-size:12px;color:rgba(251,0,159,0.7);margin-left:auto;font-weight:600}
+.cost-line{font-size:14px;color:rgba(251,244,219,0.7)}
+.cost-line b{color:var(--vi-yellow);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900}
+
+.waiting-box{
+  text-align:center;font-size:15px;color:var(--vi-cyan);
+  padding:12px 16px;
+  border:1px solid rgba(42,254,255,0.2);border-radius:8px;
+  letter-spacing:2px;text-transform:uppercase;font-weight:600;
+  animation:pulse 1.2s ease-in-out infinite;flex:1;
+  background:rgba(42,254,255,0.03);
+}
+@keyframes pulse{0%,100%{opacity:0.6}50%{opacity:1}}
+
+/* ── Arrange panel ── */
+.arrange-panel{
+  background:rgba(12,12,20,0.9);
+  border:1px solid rgba(42,254,255,0.2);
+  border-radius:10px;padding:14px 16px;
+  display:flex;flex-direction:column;gap:8px;
+  flex:2;min-width:320px;
+}
+.arrange-hint{font-size:13px;color:rgba(251,244,219,0.6);font-style:italic}
+.arr-zone{border:1px dashed rgba(255,255,255,0.12);border-radius:8px;padding:8px}
+.arr-full{border-color:rgba(77,255,154,0.5);background:rgba(77,255,154,0.04)}
+.arr-zone-label{
+  font-size:13px;color:var(--vi-amber);margin-bottom:5px;
+  font-weight:700;text-transform:uppercase;letter-spacing:1px;
+}
+.empty-slot{
+  width:54px;height:74px;border-radius:6px;
+  border:1px dashed rgba(255,255,255,0.1);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:20px;color:rgba(255,255,255,0.1);
+}
+.unassigned-zone{border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:8px}
+.unassigned-row{flex-wrap:wrap;gap:8px !important}
+.unassigned-card{display:flex;flex-direction:column;align-items:center;gap:4px}
+.slot-btns{display:flex;gap:2px}
+.slot-btn{
+  font-size:13px;padding:2px 6px;border-radius:3px;
+  background:rgba(252,107,35,0.15);color:var(--vi-orange);
+  border:1px solid rgba(252,107,35,0.3);cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  transition:background 0.1s;
+}
+.slot-btn:hover{background:rgba(252,107,35,0.35);color:var(--vi-yellow)}
+.arr-err{font-size:14px;color:var(--vi-red);font-weight:600}
+
+/* ── Buttons ── */
+button{
+  cursor:pointer;font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:16px;border:none;
+  border-radius:7px;padding:8px 18px;
+  transition:opacity 0.15s,transform 0.15s;
+  letter-spacing:1.5px;text-transform:uppercase;
+}
+button:hover{opacity:0.88;transform:scale(0.98)}
+button:disabled{opacity:0.3;cursor:not-allowed;transform:none}
+.btn-gold{
+  background:linear-gradient(135deg,var(--vi-orange),var(--vi-amber));
+  color:#000;font-weight:900;
+}
+.btn-ghost{
+  background:rgba(255,255,255,0.06);color:var(--vi-cream);
+  border:1px solid rgba(255,255,255,0.2);
+}
+.btn-full{width:100%}
+
+/* ── Game log ── */
+.game-log{
+  background:rgba(5,5,8,0.8);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:8px;padding:8px 12px;
+  max-height:220px;overflow-y:auto;
+  font-size:13px;color:rgba(251,244,219,0.6);line-height:1.75;
+  flex:1;min-width:220px;
+  scrollbar-width:thin;scrollbar-color:rgba(42,254,255,0.15) transparent;
+}
+.log-line{border-bottom:1px solid rgba(255,255,255,0.04);padding:1px 0}
+.log-win{color:#4dff9a;font-weight:600}
+.log-event{color:var(--vi-amber);font-weight:600}
+.log-royalty{color:var(--vi-pink);font-weight:700}
+
+/* ── Result overlay ── */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.92);
+  display:flex;align-items:center;justify-content:center;z-index:200;
+}
+.result-modal{
+  background:var(--vi-dark);
+  border:2px solid rgba(252,107,35,0.6);
+  border-radius:16px;padding:28px 32px;
+  max-width:500px;width:94%;max-height:88vh;overflow-y:auto;
+  box-shadow:0 0 60px rgba(252,107,35,0.2),0 0 120px rgba(149,0,198,0.1);
+}
+.result-modal h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:26px;font-weight:900;
+  color:var(--vi-orange);text-align:center;
+  letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;
+}
+.mystery-reveal{
+  text-align:center;padding:12px;
+  background:rgba(42,254,255,0.05);
+  border:1px solid rgba(42,254,255,0.2);
+  border-radius:8px;margin-bottom:14px;
+}
+.mystery-reveal-label{
+  font-size:13px;color:var(--vi-cyan);
+  letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;font-weight:700;
+}
+.result-section{border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.result-pot-row,.result-player-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 14px;font-size:14px;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.result-pot-row:last-child,.result-player-row:last-child{border-bottom:none}
+.result-pot-row{color:rgba(251,244,219,0.7)}
+.result-winner{color:#4dff9a;font-weight:700;font-family:'Barlow Condensed',sans-serif;font-size:18px;letter-spacing:1px}
+.delta-pos{color:#4dff9a;font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:19px}
+.delta-neg{color:var(--vi-red);font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:19px}
+.result-btns{display:flex;justify-content:center;gap:10px;margin-top:14px}
+</style>
+</head>
+<body>
+<div id="root"><div class="loading">Shuffling the deck…</div></div>
+
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+<script>
+// ── Sound Engine ──────────────────────────────────────────────────────────────
+var _actx=null;
+function getCtx(){if(!_actx)_actx=new(window.AudioContext||window.webkitAudioContext)();if(_actx.state==='suspended')_actx.resume();return _actx;}
+function osc(type,freq,start,dur,vol){try{var ac=getCtx(),o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.setValueAtTime(freq,start);g.gain.setValueAtTime(vol||0.2,start);g.gain.exponentialRampToValueAtTime(0.001,start+dur);o.connect(g);g.connect(ac.destination);o.start(start);o.stop(start+dur+0.05);}catch(e){}}
+function nz(start,dur,vol,fq){try{var ac=getCtx(),buf=ac.createBuffer(1,ac.sampleRate*dur,ac.sampleRate),d=buf.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;var src=ac.createBufferSource();src.buffer=buf;var f=ac.createBiquadFilter();f.type='bandpass';f.frequency.setValueAtTime(fq||800,start);var g=ac.createGain();g.gain.setValueAtTime(vol||0.15,start);g.gain.exponentialRampToValueAtTime(0.001,start+dur);src.connect(f);f.connect(g);g.connect(ac.destination);src.start(start);src.stop(start+dur+0.05);}catch(e){}}
+var SFX={
+  deal:function(){var t=getCtx().currentTime;nz(t,.06,.25,1200);osc('triangle',1800,t,.04,.08);},
+  chip:function(){var t=getCtx().currentTime;nz(t,.04,.3,2400);osc('sine',900,t,.06,.12);},
+  chipsIn:function(){var t=getCtx().currentTime;for(var i=0;i<4;i++){nz(t+i*.07,.05,.2,1800+i*200);osc('sine',700+i*80,t+i*.07,.06,.1);}},
+  bidSubmit:function(){var t=getCtx().currentTime;osc('sine',440,t,.08,.2);osc('sine',660,t+.06,.1,.18);},
+  cardPick:function(){var t=getCtx().currentTime;nz(t,.07,.22,900);osc('triangle',1200,t,.05,.1);},
+  aimo:function(){var t=getCtx().currentTime;[220,277,330,440].forEach(function(f,i){osc('sawtooth',f,t+i*.07,.15,.15);});osc('sine',60,t+.28,.3,.4);nz(t+.28,.15,.2,200);},
+  flip:function(){var t=getCtx().currentTime;nz(t,.05,.18,600);osc('sine',520,t,.06,.12);},
+  win:function(){var t=getCtx().currentTime;[261,329,392,523].forEach(function(f,i){osc('sine',f,t+i*.08,.5,.2);});SFX.chipsIn();},
+  royalty:function(){var t=getCtx().currentTime;[130,164,196,261,329].forEach(function(f,i){osc('sawtooth',f,t+i*.06,.6,.18);});osc('sine',523,t+.35,.5,.25);},
+  elim:function(){var t=getCtx().currentTime;[330,277,220,164].forEach(function(f,i){osc('triangle',f,t+i*.12,.2,.18);});},
+  shuffle:function(){var t=getCtx().currentTime;for(var i=0;i<8;i++)nz(t+i*.055,.07,.18,900+Math.random()*600);},
+  discard:function(){var t=getCtx().currentTime;nz(t,.08,.2,700);osc('triangle',880,t,.04,.09);osc('triangle',660,t+.04,.06,.1);},
+  showdown:function(){var t=getCtx().currentTime;for(var i=0;i<3;i++){nz(t+i*.12,.08,.2,1000+i*300);osc('sine',400+i*100,t+i*.12,.1,.15);}osc('sine',800,t+.38,.25,.22);}
+};
+</script>
+
+<script>
+(function(){
+var h=React.createElement;
+var useState=React.useState;
+var useEffect=React.useEffect;
+var useRef=React.useRef;
+
+var RANKS=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+var SUITS=['\u2660','\u2665','\u2666','\u2663'];
+var RANK_VAL={};RANKS.forEach(function(r,i){RANK_VAL[r]=i+2;});
+function makeDeck(){var d=[];SUITS.forEach(function(s){RANKS.forEach(function(r){d.push({rank:r,suit:s});});});return d;}
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function isRed(c){return c.suit==='\u2665'||c.suit==='\u2666';}
+function ckey(c){return c.rank+c.suit;}
+function rv(r){return RANK_VAL[r];}
+
+function evalFive(cards){
+  if(!cards||cards.length!==5)return{rank:-1,name:'?',tb:[]};
+  var ranks=cards.map(function(c){return rv(c.rank);}).sort(function(a,b){return b-a;});
+  var suits=cards.map(function(c){return c.suit;});
+  var isFlush=suits.every(function(s){return s===suits[0];});
+  var rc={};ranks.forEach(function(r){rc[r]=(rc[r]||0)+1;});
+  var counts=Object.values(rc).sort(function(a,b){return b-a;});
+  var ur=Object.keys(rc).map(Number).sort(function(a,b){return b-a;});
+  var straight=(ur.length===5&&ur[0]-ur[4]===4)||(JSON.stringify(ur)===JSON.stringify([14,5,4,3,2]));
+  var royal=isFlush&&straight&&ur[0]===14&&ur[4]===10;
+  var rank,name;
+  if(royal){rank=9;name='Royal Flush';}else if(isFlush&&straight){rank=8;name='Straight Flush';}
+  else if(counts[0]===4){rank=7;name='Four of a Kind';}else if(counts[0]===3&&counts[1]===2){rank=6;name='Full House';}
+  else if(isFlush){rank=5;name='Flush';}else if(straight){rank=4;name='Straight';}
+  else if(counts[0]===3){rank=3;name='Three of a Kind';}else if(counts[0]===2&&counts[1]===2){rank=2;name='Two Pair';}
+  else if(counts[0]===2){rank=1;name='One Pair';}else{rank=0;name='High Card';}
+  return{rank:rank,name:name,tb:ranks};
+}
+function evalThree(cards){
+  if(!cards||cards.length!==3)return{rank:-1,name:'?',tb:[]};
+  var ranks=cards.map(function(c){return rv(c.rank);}).sort(function(a,b){return b-a;});
+  var suits=cards.map(function(c){return c.suit;});
+  var isFlush=suits.every(function(s){return s===suits[0];});
+  var rc={};ranks.forEach(function(r){rc[r]=(rc[r]||0)+1;});
+  var counts=Object.values(rc).sort(function(a,b){return b-a;});
+  var ur=Object.keys(rc).map(Number).sort(function(a,b){return b-a;});
+  var straight=ur.length===3&&ur[0]-ur[2]===2;
+  var rank,name;
+  if(counts[0]===3){rank=5;name='Trips';}else if(isFlush&&straight){rank=4;name='Str.Flush';}
+  else if(straight){rank=3;name='Straight';}else if(isFlush){rank=2;name='Flush';}
+  else if(counts[0]===2){rank=1;name='Pair';}else{rank=0;name='High Card';}
+  return{rank:rank,name:name,tb:ranks};
+}
+function cmpHands(a,b){if(a.rank!==b.rank)return b.rank-a.rank;for(var i=0;i<Math.min(a.tb.length,b.tb.length);i++)if(a.tb[i]!==b.tb[i])return b.tb[i]-a.tb[i];return 0;}
+
+function aiBid(player){var bid=Math.floor(Math.random()*21)*5;var safe=Math.min(bid,player.bankroll);var aimo=Math.random()<0.22&&player.bankroll>=safe+200;return{bid:safe,aimo:aimo};}
+function countBits(n){var c=0;while(n){c+=n&1;n>>=1;}return c;}
+function aiArrange(cards){
+  var best={score:-Infinity,five:null,three:null,one:null};
+  for(var m5=0;m5<(1<<9);m5++){
+    if(countBits(m5)!==5)continue;
+    var five=[],rest=[];
+    for(var i=0;i<9;i++)(m5&(1<<i))?five.push(cards[i]):rest.push(cards[i]);
+    for(var m3=0;m3<(1<<4);m3++){
+      if(countBits(m3)!==3)continue;
+      var three=[],one=[];
+      for(var j=0;j<4;j++)(m3&(1<<j))?three.push(rest[j]):one.push(rest[j]);
+      var fe=evalFive(five),te=evalThree(three);
+      if(fe.rank<te.rank)continue;
+      if(fe.rank===te.rank&&cmpHands(fe,te)>0)continue;
+      var score=fe.rank*1000+te.rank*100;
+      if(score>best.score)best={score:score,five:five,three:three,one:one};
+    }
+  }
+  return best.five?best:{five:cards.slice(0,5),three:cards.slice(5,8),one:[cards[8]]};
+}
+
+var NAMES=['You','Alice','Bob','Carol'];
+function newGameState(){
+  return{phase:'bid',bidPhase:'entering',
+    players:NAMES.map(function(name,i){return{id:i,name:name,bankroll:2000,hand:[],arranged:null,isHuman:i===0,eliminated:false};}),
+    deck:[],communityCards:[],faceDownCard:null,
+    dealerIndex:Math.floor(Math.random()*4),
+    round:0,pot:0,bids:{},turnOrder:[],currentTurnIndex:0,
+    log:[],handNumber:1,aimoPickStep:0};
+}
+function addLog(g,msg,type){return Object.assign({},g,{log:[{msg:msg,type:type||'',id:Date.now()+Math.random()}].concat(g.log.slice(0,59))});}
+function pokerSeat(pid,d){return(pid-d-1+4)%4;}
+function computeTurnOrder(g){
+  var active=g.players.filter(function(p){return!p.eliminated;});
+  return active.slice().sort(function(a,b){
+    var ba=g.bids[a.id]||{bid:0,aimo:false},bb=g.bids[b.id]||{bid:0,aimo:false};
+    if(ba.aimo&&!bb.aimo)return -1;if(!ba.aimo&&bb.aimo)return 1;
+    if(ba.bid!==bb.bid)return bb.bid-ba.bid;
+    return pokerSeat(a.id,g.dealerIndex)-pokerSeat(b.id,g.dealerIndex);
+  }).map(function(p){return p.id;});
+}
+function dealHand(base){
+  var g=Object.assign({},base);
+  var deck=shuffle(makeDeck());var di=0;
+  var players=g.players.map(function(p){return Object.assign({},p,{hand:[],arranged:null});});
+  var active=players.filter(function(p){return!p.eliminated;});
+  active.forEach(function(p){players[p.id]=Object.assign({},players[p.id],{hand:deck.slice(di,di+5)});di+=5;});
+  g.players=players;g.faceDownCard=deck[di++];
+  g.communityCards=deck.slice(di,di+4);g.deck=deck.slice(di+4);
+  g.round=0;g.pot=0;g.bids={};g.turnOrder=[];g.currentTurnIndex=0;
+  g.bidPhase='entering';g.phase='bid';g.aimoPickStep=0;
+  return addLog(g,'Hand #'+g.handNumber+' — Round 1 of 4','event');
+}
+
+// Card sizes: lg, md, sm
+var CARD_SIZES={
+  lg:{w:64,h:88,rf:22,sf:26},
+  md:{w:54,h:74,rf:19,sf:22},
+  sm:{w:44,h:60,rf:16,sf:19}
+};
+
+function Card(props){
+  var card=props.card,selected=props.selected,clickable=props.clickable,onClick=props.onClick,size=props.size||'sm';
+  if(!card)return null;
+  var back=card.back;
+  var d=CARD_SIZES[size]||CARD_SIZES.sm;
+  var cls=['card'];
+  if(back)cls.push('card-back');else cls.push(isRed(card)?'red':'black');
+  if(selected)cls.push('selected');
+  if(clickable)cls.push('clickable');
+  return h('div',{
+    className:cls.join(' '),
+    style:{width:d.w,height:d.h},
+    onClick:clickable?onClick:undefined
+  },
+    !back&&[
+      h('span',{key:'r',className:'cr',style:{fontSize:d.rf+'px',fontWeight:900,lineHeight:1}},card.rank),
+      h('span',{key:'s',className:'cs',style:{fontSize:d.sf+'px',lineHeight:1}},card.suit)
+    ]
+  );
+}
+
+function Seat(props){
+  var player=props.player,game=props.game,pos=props.pos,aimoDiscard=props.aimoDiscard,onDiscard=props.onDiscard;
+  var isDealer=game.dealerIndex===player.id;
+  var bid=game.bids[player.id];
+  var isCurTurn=game.bidPhase==='revealed'&&game.turnOrder[game.currentTurnIndex]===player.id;
+  var showCards=player.isHuman||game.phase==='showdown';
+  var isHuman=player.isHuman;
+  var cardSize=isHuman?'md':'sm';
+
+  var cardSection;
+  if(game.phase==='showdown'&&player.arranged){
+    cardSection=h('div',{className:'seat-arranged'},
+      ['five','three','one'].map(function(slot){
+        return h('div',{key:slot,className:'seat-arr-row'},
+          h('span',{className:'seat-arr-label'},slot==='five'?evalFive(player.arranged.five).name:slot==='three'?evalThree(player.arranged.three).name:'1-card'),
+          h('div',{className:'card-row compact'},player.arranged[slot].map(function(c){return h(Card,{key:ckey(c),card:c,size:'sm'});}))
+        );
+      })
+    );
+  }else{
+    cardSection=h('div',{className:'card-row'+(isHuman?' human-cards':'')},
+      player.hand.map(function(c){
+        var canDiscard=isHuman&&aimoDiscard;
+        return h(Card,{key:ckey(c),card:showCards?c:{back:true,suit:'\u2660',rank:'?'},size:cardSize,clickable:canDiscard,onClick:canDiscard?function(){onDiscard(c);}:undefined});
+      })
+    );
+  }
+
+  var cls='seat seat-'+pos;
+  if(player.eliminated)cls+=' seat-elim';
+  if(isCurTurn)cls+=' seat-active';
+
+  return h('div',{className:cls},
+    h('div',{className:'seat-info'},
+      h('div',{className:'seat-name'},player.name,
+        isDealer&&h('span',{className:'dealer-chip'},'D'),
+        player.eliminated&&h('span',{className:'elim-tag'},'OUT')
+      ),
+      h('div',{className:'seat-bank'},'$'+player.bankroll.toLocaleString()),
+      bid&&game.bidPhase==='revealed'&&h('div',{className:'seat-bid'},'$'+bid.bid,bid.aimo&&h('span',{className:'aimo-pill'},'AIMO')),
+      isCurTurn&&!isHuman&&h('div',{className:'thinking-dot'},'●●●')
+    ),
+    cardSection
+  );
+}
+
+function App(){
+  var gs=useState(null);var game=gs[0];var setGame=gs[1];
+  var bs=useState(0);var humanBid=bs[0];var setHumanBid=bs[1];
+  var as=useState(false);var humanAIMO=as[0];var setHumanAIMO=as[1];
+  var ss=useState(false);var bidSubmitted=ss[0];var setBidSubmitted=ss[1];
+  var cs=useState(null);var commSel=cs[0];var setCommSel=cs[1];
+  var arrS=useState({five:[],three:[],one:[],unassigned:[]});var arranging=arrS[0];var setArranging=arrS[1];
+  var errS=useState('');var arrErr=errS[0];var setArrErr=errS[1];
+  var resS=useState(null);var result=resS[0];var setResult=resS[1];
+  var mutS=useState(false);var muted=mutS[0];var setMuted=mutS[1];
+  var rulesS=useState(false);var showRules=rulesS[0];var setShowRules=rulesS[1];
+  var royS=useState(false);var showRoy=royS[0];var setShowRoy=royS[1];
+  var mutedRef=useRef(false);
+
+  function sfx(fn){if(!mutedRef.current){try{fn();}catch(e){}}}
+  function toggleMute(){mutedRef.current=!mutedRef.current;setMuted(mutedRef.current);}
+
+  useEffect(function(){setGame(dealHand(newGameState()));sfx(SFX.shuffle);},[]);
+
+  useEffect(function(){
+    if(!game||game.phase!=='bid'||game.bidPhase!=='entering'||!bidSubmitted)return;
+    var t=setTimeout(function(){
+      setGame(function(prev){
+        var g=Object.assign({},prev,{bids:Object.assign({},prev.bids)});
+        g.players.filter(function(p){return!p.eliminated&&!p.isHuman;}).forEach(function(p){g.bids[p.id]=aiBid(p);});
+        var order=computeTurnOrder(g);
+        g=Object.assign({},g,{bidPhase:'revealed',turnOrder:order,currentTurnIndex:0});
+        g=addLog(g,'Bids in! Order: '+order.map(function(id){return g.players[id].name;}).join(', '),'event');
+        return g;
+      });sfx(SFX.flip);
+    },700);
+    return function(){clearTimeout(t);};
+  },[game,bidSubmitted]);
+
+  useEffect(function(){
+    if(!game||game.phase!=='bid'||game.bidPhase!=='revealed'||game.turnOrder.length===0)return;
+    if(game.currentTurnIndex>=game.turnOrder.length){
+      var t=setTimeout(function(){
+        setGame(function(prev){
+          var g=Object.assign({},prev,{round:prev.round+1,bids:{},turnOrder:[],currentTurnIndex:0,bidPhase:'entering',aimoPickStep:0});
+          if(g.round>=4){
+            g.players=g.players.map(function(p){return p.eliminated||p.isHuman?p:Object.assign({},p,{arranged:aiArrange(p.hand)});});
+            g=Object.assign({},g,{phase:'arrange'});
+            g=addLog(g,'All rounds done! Arrange your hands.','event');
+            setArranging({five:[],three:[],one:[],unassigned:g.players[0].hand.slice()});
+          }else{
+            var cards=g.deck.slice(0,4);
+            g=Object.assign({},g,{communityCards:cards,deck:g.deck.slice(4)});
+            g=addLog(g,'Round '+(g.round+1)+' of 4 — place your bids!','event');
+            setBidSubmitted(false);setHumanBid(0);setHumanAIMO(false);sfx(SFX.deal);
+          }
+          return g;
+        });
+      },400);
+      return function(){clearTimeout(t);};
+    }
+    var pid=game.turnOrder[game.currentTurnIndex];
+    if(game.players[pid]&&game.players[pid].isHuman)return;
+    var t2=setTimeout(function(){
+      setGame(function(prev){
+        var g=Object.assign({},prev,{players:prev.players.slice(),communityCards:prev.communityCards.slice()});
+        var player=g.players[pid];
+        if(!player||player.eliminated){g.currentTurnIndex++;return g;}
+        var bid=g.bids[pid]||{bid:0,aimo:false};
+        var cost=bid.bid+(bid.aimo?200:0);
+        var np=g.players.slice();np[pid]=Object.assign({},player,{bankroll:Math.max(0,player.bankroll-cost)});g.players=np;
+        g.pot+=cost;
+        if(bid.aimo&&g.communityCards.length>=2){
+          sfx(SFX.aimo);
+          var picks=g.communityCards.slice(0,2),rest2=g.communityCards.slice(2);
+          var nh=g.players[pid].hand.concat(picks);
+          var wi=0;nh.forEach(function(c,i){if(rv(c.rank)<rv(nh[wi].rank))wi=i;});
+          var disc=nh[wi];
+          var np2=g.players.slice();np2[pid]=Object.assign({},np2[pid],{hand:nh.filter(function(_,i){return i!==wi;})});g.players=np2;
+          g.communityCards=rest2.concat([disc]);
+          g=addLog(g,player.name+' ALL IN MAX OUT — picks '+picks.map(function(c){return c.rank+c.suit;}).join(', ')+', returns '+disc.rank+disc.suit,'royalty');
+        }else if(g.communityCards.length>0){
+          sfx(SFX.cardPick);
+          var pick=g.communityCards[0];g.communityCards=g.communityCards.slice(1);
+          var np3=g.players.slice();np3[pid]=Object.assign({},np3[pid],{hand:np3[pid].hand.concat([pick])});g.players=np3;
+          g=addLog(g,player.name+' picks '+pick.rank+pick.suit+' (bid $'+bid.bid+')');
+        }
+        g.currentTurnIndex++;return g;
+      });
+    },1600);
+    return function(){clearTimeout(t2);};
+  },[game]);
+
+  function submitBid(){
+    var cost=humanBid+(humanAIMO?200:0);
+    if(cost>game.players[0].bankroll){alert('Not enough chips!');return;}
+    sfx(SFX.bidSubmit);sfx(SFX.chipsIn);
+    setGame(function(prev){return addLog(Object.assign({},prev,{bids:Object.assign({},prev.bids,{0:{bid:humanBid,aimo:humanAIMO}})}), 'You bid $'+humanBid+(humanAIMO?' + AIMO':''),'event');});
+    setBidSubmitted(true);
+  }
+
+  function confirmPick(){
+    if(!commSel)return;
+    var bid=game.bids[0]||{bid:0,aimo:false};sfx(SFX.cardPick);
+    setGame(function(prev){
+      var g=Object.assign({},prev,{players:prev.players.slice(),communityCards:prev.communityCards.slice()});
+      if(bid.aimo&&g.aimoPickStep===0){
+        sfx(SFX.aimo);var cost=bid.bid+200;
+        var np=g.players.slice();np[0]=Object.assign({},np[0],{bankroll:np[0].bankroll-cost,hand:np[0].hand.concat([commSel])});g.players=np;
+        g.pot+=cost;g.communityCards=g.communityCards.filter(function(c){return ckey(c)!==ckey(commSel);});
+        g.aimoPickStep=0.5;g=addLog(g,'You pick '+commSel.rank+commSel.suit+' (AIMO 1st) — select 2nd','event');
+      }else if(bid.aimo&&g.aimoPickStep===0.5){
+        var np2=g.players.slice();np2[0]=Object.assign({},np2[0],{hand:np2[0].hand.concat([commSel])});g.players=np2;
+        g.communityCards=g.communityCards.filter(function(c){return ckey(c)!==ckey(commSel);});
+        g.aimoPickStep=1;g=addLog(g,'You pick '+commSel.rank+commSel.suit+' (AIMO 2nd) — now discard','event');
+      }else{
+        var np3=g.players.slice();np3[0]=Object.assign({},np3[0],{bankroll:np3[0].bankroll-bid.bid,hand:np3[0].hand.concat([commSel])});g.players=np3;
+        g.pot+=bid.bid;g.communityCards=g.communityCards.filter(function(c){return ckey(c)!==ckey(commSel);});
+        g.currentTurnIndex++;g=addLog(g,'You pick '+commSel.rank+commSel.suit+' (bid $'+bid.bid+')','event');
+      }
+      return g;
+    });setCommSel(null);
+  }
+
+  function discardFromHand(card){
+    sfx(SFX.discard);
+    setGame(function(prev){
+      var g=Object.assign({},prev,{players:prev.players.slice()});
+      var np=g.players.slice();np[0]=Object.assign({},np[0],{hand:np[0].hand.filter(function(c){return ckey(c)!==ckey(card);})});g.players=np;
+      g.communityCards=g.communityCards.concat([card]);
+      g.aimoPickStep=0;g.currentTurnIndex++;
+      return addLog(g,'You discard '+card.rank+card.suit+' back to community','event');
+    });
+  }
+
+  function assignCard(card,slot){
+    var key=ckey(card);
+    setArranging(function(prev){
+      var np={five:prev.five.slice(),three:prev.three.slice(),one:prev.one.slice(),unassigned:prev.unassigned.slice()};
+      ['five','three','one','unassigned'].forEach(function(s){np[s]=np[s].filter(function(c){return ckey(c)!==key;});});
+      var max=slot==='five'?5:slot==='three'?3:slot==='one'?1:999;
+      if(slot==='unassigned'){np.unassigned.push(card);}
+      else if(prev[slot].length>=max){np.unassigned.push(prev[slot][0]);np[slot]=prev[slot].slice(1).filter(function(c){return ckey(c)!==key;}).concat([card]);}
+      else{np[slot].push(card);}
+      return np;
+    });sfx(SFX.chip);setArrErr('');
+  }
+
+  function submitArrange(){
+    var five=arranging.five,three=arranging.three,one=arranging.one;
+    if(five.length!==5||three.length!==3||one.length!==1){setArrErr('Fill all slots: 5, 3, and 1 card.');return;}
+    var fe=evalFive(five),te=evalThree(three);
+    if(fe.rank<te.rank||(fe.rank===te.rank&&cmpHands(fe,te)>0)){setArrErr('5-card hand must be at least as strong as 3-card hand!');return;}
+    sfx(SFX.showdown);
+    setGame(function(prev){
+      var g=Object.assign({},prev,{players:prev.players.slice()});
+      var np=g.players.slice();np[0]=Object.assign({},np[0],{arranged:{five:five,three:three,one:one}});g.players=np;
+      g.phase='showdown';
+      var active=g.players.filter(function(p){return!p.eliminated;});
+      var fiveRes=active.map(function(p){return{player:p,ev:evalFive(p.arranged.five)};}).sort(function(a,b){return cmpHands(a.ev,b.ev);});
+      var threeRes=active.map(function(p){return{player:p,ev:evalThree(p.arranged.three)};}).sort(function(a,b){return cmpHands(a.ev,b.ev);});
+      var fiveWin=fiveRes[0].player,threeWin=threeRes[0].player;
+      var half=Math.floor(g.pot/2);
+      var delta={};active.forEach(function(p){delta[p.id]=0;});
+      delta[fiveWin.id]+=half;delta[threeWin.id]+=g.pot-half;
+      g=addLog(g,'5-card: '+fiveWin.name+' wins $'+half+' — '+fiveRes[0].ev.name,'win');
+      g=addLog(g,'3-card: '+threeWin.name+' wins $'+(g.pot-half)+' — '+threeRes[0].ev.name,'win');
+      var fdc=g.faceDownCard;
+      active.forEach(function(p){var oc=p.arranged.one[0];if(oc.rank===fdc.rank){delta[p.id]+=30;g=addLog(g,p.name+' +$30 rank match ('+oc.rank+')','win');}else if(oc.suit===fdc.suit){delta[p.id]+=10;g=addLog(g,p.name+' +$10 suit match ('+oc.suit+')','win');}});
+      var hadRoyalty=false;
+      active.forEach(function(p){
+        var fe2=evalFive(p.arranged.five),te2=evalThree(p.arranged.three);
+        var opp=active.filter(function(o){return o.id!==p.id;});
+        var r5=fe2.name==='Royal Flush'?1000:fe2.name==='Straight Flush'?200:0;
+        var r3=te2.name==='Trips'?500:0;
+        if(r5>0){hadRoyalty=true;opp.forEach(function(o){delta[o.id]-=r5;delta[p.id]+=r5;});g=addLog(g,p.name+' $'+(r5*opp.length)+' royalty — '+fe2.name+'!','royalty');}
+        if(r3>0){hadRoyalty=true;opp.forEach(function(o){delta[o.id]-=r3;delta[p.id]+=r3;});g=addLog(g,p.name+' $'+(r3*opp.length)+' royalty — Trips!','royalty');}
+      });
+      setTimeout(function(){sfx(hadRoyalty?SFX.royalty:SFX.win);},400);
+      var np2=g.players.slice();active.forEach(function(p){np2[p.id]=Object.assign({},np2[p.id],{bankroll:np2[p.id].bankroll+delta[p.id]});});g.players=np2;
+      var np3=g.players.slice();np3.forEach(function(p,i){if(p.bankroll<=0&&!p.eliminated){np3[i]=Object.assign({},p,{eliminated:true,bankroll:0});sfx(SFX.elim);g=addLog(g,p.name+' eliminated!','event');}});g.players=np3;
+      var alive=g.players.filter(function(p){return!p.eliminated;});
+      if(alive.length<=1){g=Object.assign({},g,{phase:'gameover'});g=addLog(g,alive.length===1?alive[0].name+' wins the game!':'Game over!','event');}
+      setResult({fiveWin:fiveWin,threeWin:threeWin,fiveHand:fiveRes[0].ev.name,threeHand:threeRes[0].ev.name,half:half,total:g.pot,fdc:fdc,delta:delta,active:active,alive:alive});
+      return g;
+    });
+  }
+
+  function nextHand(){
+    setResult(null);setCommSel(null);setBidSubmitted(false);
+    setHumanBid(0);setHumanAIMO(false);setArranging({five:[],three:[],one:[],unassigned:[]});setArrErr('');
+    sfx(SFX.shuffle);
+    setGame(function(prev){
+      if(prev.phase==='gameover')return prev;
+      var g=Object.assign({},prev,{handNumber:prev.handNumber+1});
+      g.dealerIndex=(g.dealerIndex+1)%4;
+      while(g.players[g.dealerIndex].eliminated)g.dealerIndex=(g.dealerIndex+1)%4;
+      return dealHand(g);
+    });
+  }
+
+  function restartGame(){
+    setResult(null);setCommSel(null);setBidSubmitted(false);
+    setHumanBid(0);setHumanAIMO(false);setArranging({five:[],three:[],one:[],unassigned:[]});setArrErr('');
+    sfx(SFX.shuffle);setGame(dealHand(newGameState()));
+  }
+
+  if(!game)return h('div',{className:'felt loading'},'Shuffling the deck…');
+
+  var human=game.players[0];
+  var isHumanTurn=game.phase==='bid'&&game.bidPhase==='revealed'&&game.turnOrder.length>0&&game.turnOrder[game.currentTurnIndex]===0;
+  var hBid=game.bids[0]||{bid:0,aimo:false};
+  var totalCost=humanBid+(humanAIMO?200:0);
+
+  var phaseDesc='';
+  if(game.phase==='bid'&&game.bidPhase==='entering')phaseDesc='Round '+(game.round+1)+' of 4 — Place Your Bids';
+  else if(game.phase==='bid'&&game.bidPhase==='revealed'&&isHumanTurn&&game.aimoPickStep===1)phaseDesc='All In Max Out — Click your card to discard it back';
+  else if(game.phase==='bid'&&game.bidPhase==='revealed'&&isHumanTurn)phaseDesc='Your turn — select a community card';
+  else if(game.phase==='bid'&&game.bidPhase==='revealed')phaseDesc='Processing picks…';
+  else if(game.phase==='arrange')phaseDesc='Planning Phase — Arrange Your 9 Cards';
+  else if(game.phase==='showdown')phaseDesc='Showdown!';
+  else if(game.phase==='gameover')phaseDesc='Game Over';
+
+  return h('div',{className:'felt'},
+    h('header',{className:'header'},
+      h('div',{className:'header-left'},
+        h('span',{className:'hand-num'},'Hand #'+game.handNumber),
+        (game.phase==='bid'||game.phase==='arrange')&&h('div',{className:'round-pips'},
+          [0,1,2,3].map(function(i){return h('div',{key:i,className:'pip'+(i<game.round?' pip-done':i===game.round?' pip-cur':'')});})
+        )
+      ),
+      h('h1',null,'All In Max Out'),
+      h('div',{className:'header-right'},
+        h('button',{className:'hdr-btn',onClick:function(){setShowRules(true);},'aria-label':'Rules'},'Rules'),
+        h('button',{className:'hdr-btn',onClick:function(){setShowRoy(true);},'aria-label':'Royalties'},'Royalties'),
+        h('button',{className:'mute-btn',onClick:toggleMute},muted?'🔇':'🔊')
+      )
+    ),
+    h('div',{className:'phase-label'},phaseDesc),
+
+    h('div',{className:'table-grid'},
+      h('div',{className:'grid-top'},h(Seat,{player:game.players[2],game:game,pos:2})),
+      h('div',{className:'grid-left'},h(Seat,{player:game.players[1],game:game,pos:1})),
+
+      h('div',{className:'poker-table'},
+        h('div',{className:'table-center'},
+          h('div',{className:'pot-box'},
+            h('span',{className:'pot-label'},'POT'),
+            h('span',{className:'pot-amt'},'$'+game.pot.toLocaleString())
+          ),
+          h('div',{className:'community-area'},
+            h('div',{className:'mystery-stack'},
+              h('div',{className:'zone-lbl'},'Mystery'),
+              game.phase==='showdown'&&result?h(Card,{card:game.faceDownCard,size:'md'}):h('div',{className:'card-face-down'})
+            ),
+            h('div',{className:'comm-stack'},
+              h('div',{className:'zone-lbl'},'Community'),
+              h('div',{className:'card-row comm-row'},
+                game.communityCards.length>0
+                  ?game.communityCards.map(function(c){
+                      var sel=commSel&&ckey(commSel)===ckey(c);
+                      var canPick=isHumanTurn&&game.aimoPickStep!==1;
+                      return h(Card,{key:ckey(c),card:c,size:'md',selected:sel,clickable:canPick,onClick:canPick?function(){setCommSel(c);}:undefined});
+                    })
+                  :h('span',{className:'empty-comm'},'—')
+              )
+            )
+          ),
+          game.bidPhase==='revealed'&&game.turnOrder.length>0&&h('div',{className:'bid-list'},
+            game.turnOrder.map(function(pid,idx){
+              var p=game.players[pid],b=game.bids[pid]||{bid:0,aimo:false};
+              var done=idx<game.currentTurnIndex,cur=idx===game.currentTurnIndex;
+              return h('div',{key:pid,className:'bid-row'+(done?' bid-done':cur?' bid-cur':'')},
+                h('span',{className:'bid-who'},(cur?'▶ ':done?'✓ ':'')+p.name),
+                b.aimo&&h('span',{className:'aimo-pill'},'AIMO'),
+                h('span',{className:'bid-amt'},'$'+b.bid+(b.aimo?'+$200':''))
+              );
+            })
+          ),
+          isHumanTurn&&game.aimoPickStep!==1&&commSel&&h('div',{className:'pick-btns'},
+            h('button',{className:'btn-gold',onClick:confirmPick},game.aimoPickStep===0.5?'Take 2nd Card':hBid.aimo?'Take 1st (AIMO)':'Take Card'),
+            h('button',{className:'btn-ghost',onClick:function(){setCommSel(null);}},'Cancel')
+          )
+        )
+      ),
+
+      h('div',{className:'grid-right'},h(Seat,{player:game.players[3],game:game,pos:3})),
+      h('div',{className:'grid-bottom'},
+        h(Seat,{player:human,game:game,pos:0,
+          aimoDiscard:isHumanTurn&&game.aimoPickStep===1,
+          onDiscard:discardFromHand})
+      )
+    ),
+
+    h('div',{className:'panels-row'},
+      game.phase==='bid'&&game.bidPhase==='entering'&&!bidSubmitted&&h('div',{className:'bid-panel'},
+        h('div',{className:'bid-panel-title'},'Place Your Bid'),
+        h('div',{className:'slider-row'},
+          h('label',null,'Bid'),
+          h('input',{type:'range',min:0,max:100,step:5,value:humanBid,onChange:function(e){setHumanBid(+e.target.value);sfx(SFX.chip);}}),
+          h('span',{className:'slider-val'},'$'+humanBid)
+        ),
+        h('div',{className:'aimo-row'+(humanAIMO?' aimo-on':''),onClick:function(){setHumanAIMO(function(v){return!v;});}},
+          h('input',{type:'checkbox',checked:humanAIMO,readOnly:true}),
+          h('span',{className:'aimo-label'},'All In Max Out'),
+          h('span',{className:'aimo-sub'},'+$200 · take 2, discard 1 back')
+        ),
+        h('div',{className:'cost-line'},'Total: ',h('b',null,'$'+totalCost),' · Chips: ',h('b',null,'$'+human.bankroll.toLocaleString())),
+        h('button',{className:'btn-gold btn-full',disabled:totalCost>human.bankroll,onClick:submitBid},'Submit Bid')
+      ),
+      game.phase==='bid'&&game.bidPhase==='entering'&&bidSubmitted&&h('div',{className:'waiting-box'},'Waiting for other players…'),
+
+      game.phase==='arrange'&&h('div',{className:'arrange-panel'},
+        h('div',{className:'arrange-hint'},'Use 5/3/1 buttons to assign cards. Click a slotted card to unassign.'),
+        ['five','three','one'].map(function(slot){
+          var cards=arranging[slot],max=slot==='five'?5:slot==='three'?3:1;
+          var fe=arranging.five.length===5?evalFive(arranging.five):null;
+          var te=arranging.three.length===3?evalThree(arranging.three):null;
+          return h('div',{key:slot,className:'arr-zone'+(cards.length===max?' arr-full':'')},
+            h('div',{className:'arr-zone-label'},slot==='five'?'5-card'+(fe?' — '+fe.name:''):slot==='three'?'3-card'+(te?' — '+te.name:''):'1-card (vs mystery)'),
+            h('div',{className:'card-row'},
+              cards.map(function(c){return h(Card,{key:ckey(c),card:c,clickable:true,onClick:function(){assignCard(c,'unassigned');},size:'md'});}),
+              Array(max-cards.length).fill(0).map(function(_,i){return h('div',{key:i,className:'empty-slot'},'+');})
+            )
+          );
+        }),
+        h('div',{className:'unassigned-zone'},
+          h('div',{className:'arr-zone-label'},'Unassigned ('+arranging.unassigned.length+')'),
+          h('div',{className:'card-row unassigned-row'},
+            arranging.unassigned.map(function(c){
+              return h('div',{key:ckey(c),className:'unassigned-card'},
+                h(Card,{card:c,size:'md'}),
+                h('div',{className:'slot-btns'},
+                  ['five','three','one'].map(function(s){
+                    return h('button',{key:s,className:'slot-btn',onClick:function(){assignCard(c,s);}},s==='five'?'5':s==='three'?'3':'1');
+                  })
+                )
+              );
+            })
+          )
+        ),
+        arrErr&&h('div',{className:'arr-err'},arrErr),
+        h('button',{className:'btn-gold btn-full',onClick:submitArrange},'Set Hands & Showdown →')
+      ),
+
+      h('div',{className:'game-log'},
+        game.log.map(function(e){return h('div',{key:e.id,className:'log-line'+(e.type?' log-'+e.type:'')},e.msg);})
+      )
+    ),
+
+    result&&h('div',{className:'overlay'},
+      h('div',{className:'result-modal'},
+        h('h2',null,'Hand #'+game.handNumber+' Results'),
+        h('div',{className:'mystery-reveal'},
+          h('div',{className:'mystery-reveal-label'},'Mystery Card Revealed'),
+          h(Card,{card:result.fdc,size:'lg'})
+        ),
+        h('div',{className:'result-section'},
+          h('div',{className:'result-pot-row'},h('span',null,'5-card pot ($'+result.half+')'),h('span',{className:'result-winner'},result.fiveWin.name+' — '+result.fiveHand)),
+          h('div',{className:'result-pot-row'},h('span',null,'3-card pot ($'+(result.total-result.half)+')'),h('span',{className:'result-winner'},result.threeWin.name+' — '+result.threeHand))
+        ),
+        h('div',{className:'result-section'},
+          result.active.map(function(p){
+            var d=result.delta[p.id]||0;
+            return h('div',{key:p.id,className:'result-player-row'},
+              h('span',null,p.name),
+              h('span',{className:d>=0?'delta-pos':'delta-neg'},(d>=0?'+':'')+d)
+            );
+          })
+        ),
+        h('div',{className:'result-btns'},
+          game.phase==='gameover'
+            ?h('button',{className:'btn-gold',onClick:restartGame},'Play Again')
+            :h('button',{className:'btn-gold',onClick:nextHand},'Next Hand →')
+        )
+      )
+    )
+
+    showRules&&h('div',{className:'info-overlay',onClick:function(){setShowRules(false);}},
+      h('div',{className:'info-modal',onClick:function(e){e.stopPropagation();}},
+        h('div',{className:'info-modal-hdr'},
+          h('h2',null,'Game Rules'),
+          h('button',{className:'close-btn',onClick:function(){setShowRules(false);}},'✕')
+        ),
+        h('div',{className:'info-modal-body'},
+          h('div',{className:'rule-block'},
+            h('h3',null,'Setup'),
+            h('p',null,'4 players each start with ',h('strong',null,'$2,000'),'. The dealer button is randomly assigned and rotates left after every hand. A single face-down ',h('strong',null,'mystery card'),' is drawn and placed in the center at the start of each hand.')
+          ),
+          h('div',{className:'rule-block'},
+            h('h3',null,'Community Phase — 4 Rounds'),
+            h('p',null,'Each round, ',h('strong',null,'4 community cards'),' are revealed face-up. All players simultaneously place a ',h('strong',null,'silent bid of $0–$100'),'. Bids are then revealed.'),
+            h('p',null,'Players pick one card from the community in order from ',h('strong',null,'highest bid to lowest'),'. Ties are broken by poker seat order (left of dealer first).'),
+            h('p',null,'After 4 rounds, each player holds ',h('strong',null,'9 cards'),' total.')
+          ),
+          h('div',{className:'rule-block'},
+            h('h3',null,'All In Max Out (AIMO)'),
+            h('p',null,'On top of your regular bid, pay an extra ',h('strong',null,'$200'),' to go All In Max Out. AIMO bidders pick ',h('strong',null,'before'),' all non-AIMO players.'),
+            h('p',null,'Instead of taking 1 card, you ',h('strong',null,'take 2 cards'),' from the community and ',h('strong',null,'return 1 card'),' from your hand back to the community — where others can still take it.'),
+            h('p',null,'If two players both play AIMO, the one with the higher regular bid goes first. Ties resolve by seat order.')
+          ),
+          h('div',{className:'rule-block'},
+            h('h3',null,'Planning Phase'),
+            h('p',null,'Arrange your 9 cards into three hands:'),
+            h('ul',null,
+              h('li',null,h('strong',null,'5-card hand'),' (bottom) — standard poker hand'),
+              h('li',null,h('strong',null,'3-card hand'),' (middle) — 3-card poker hand'),
+              h('li',null,h('strong',null,'1 card'),' (top) — compared against the mystery card')
+            ),
+            h('p',null,h('strong',null,'The 5-card hand must be equal to or stronger than the 3-card hand.'))
+          ),
+          h('div',{className:'rule-block'},
+            h('h3',null,'Showdown'),
+            h('p',null,'The pot is split: ',h('strong',null,'half'),' goes to the best 5-card hand, ',h('strong',null,'half'),' to the best 3-card hand.'),
+            h('p',null,'The mystery card is revealed. Your top card earns a bonus if it matches:'),
+            h('ul',null,
+              h('li',null,h('strong',null,'Same rank'),': +$30'),
+              h('li',null,h('strong',null,'Same suit'),': +$10')
+            )
+          ),
+          h('div',{className:'rule-block'},
+            h('h3',null,'Royalties'),
+            h('p',null,'Certain hands earn royalties paid by ',h('strong',null,'each opponent'),'. See the Royalties reference for the full list.'),
+            h('p',null,'The game continues until a player's bankroll reaches ',h('strong',null,'$0'),'. Last player standing wins.')
+          )
+        )
+      )
+    ),
+
+    showRoy&&h('div',{className:'info-overlay',onClick:function(){setShowRoy(false);}},
+      h('div',{className:'info-modal',onClick:function(e){e.stopPropagation();}},
+        h('div',{className:'info-modal-hdr'},
+          h('h2',null,'Royalties & Bonuses'),
+          h('button',{className:'close-btn',onClick:function(){setShowRoy(false);}},'✕')
+        ),
+        h('div',{className:'info-modal-body'},
+          h('div',{className:'rule-block'},
+            h('h3',null,'5-Card Hand Royalties'),
+            h('p',null,'Paid by ',h('strong',null,'each opponent'),' to you when you make the hand.'),
+            h('div',{className:'royalty-table'},
+              h('div',{className:'royalty-hdr'},h('span',null,'Hand'),h('span',null,'Per Opponent')),
+              h('div',{className:'royalty-row r-mega'},h('span',{className:'rhand'},'♥ Royal Flush'),h('span',{className:'rpay'},'$1,000')),
+              h('div',{className:'royalty-row r-high'},h('span',{className:'rhand'},'♠ Straight Flush'),h('span',{className:'rpay'},'$200')),
+              h('div',{className:'royalty-row'},h('span',{className:'rhand',style:{color:'rgba(251,244,219,0.4)'}},'♦ All other hands'),h('span',{className:'rpay',style:{color:'rgba(251,244,219,0.3)'}},'—'))
+            )
+          ),
+          h('div',{className:'rule-block'},
+            h('h3',null,'3-Card Hand Royalties'),
+            h('p',null,'Paid by ',h('strong',null,'each opponent'),' to you when you make the hand.'),
+            h('div',{className:'royalty-table'},
+              h('div',{className:'royalty-hdr'},h('span',null,'Hand'),h('span',null,'Per Opponent')),
+              h('div',{className:'royalty-row r-mid'},h('span',{className:'rhand'},'♣ Trips (3 of a Kind)'),h('span',{className:'rpay'},'$500')),
+              h('div',{className:'royalty-row'},h('span',{className:'rhand',style:{color:'rgba(251,244,219,0.4)'}},'♥ All other hands'),h('span',{className:'rpay',style:{color:'rgba(251,244,219,0.3)'}},'—'))
+            )
+          ),
+          h('div',{className:'rule-block'},
+            h('h3',null,'Mystery Card Bonuses'),
+            h('p',null,'Your 1-card (top card) is compared against the revealed mystery card after showdown.'),
+            h('div',{className:'royalty-table'},
+              h('div',{className:'royalty-hdr'},h('span',null,'Match'),h('span',null,'Bonus')),
+              h('div',{className:'royalty-row r-high'},h('span',{className:'rhand'},'Same Rank'),h('span',{className:'rpay'},'+$30')),
+              h('div',{className:'royalty-row r-low'},h('span',{className:'rhand'},'Same Suit'),h('span',{className:'rpay'},'+$10'))
+            ),
+            h('p',{className:'royalty-note'},'Rank match pays $30 regardless of suit. Suit match pays $10 only if rank does not also match.')
+          ),
+          h('div',{className:'rule-block'},
+            h('h3',null,'Example Payout'),
+            h('p',null,'You hit a ',h('strong',null,'Royal Flush'),' with 3 opponents still in the hand: you collect ',h('strong',null,'$3,000'),' in royalties ($1,000 × 3).'),
+            h('p',null,'You also hit ',h('strong',null,'Trips'),' in your 3-card hand: another ',h('strong',null,'$1,500'),' ($500 × 3).'),
+            h('p',null,'Combined royalty haul: ',h('strong',null,'$4,500 — in a single hand.'))
+          )
+        )
+      )
+    ),
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(h(React.StrictMode,null,h(App)));
+})();
+</script>
+</body>
+</html>
