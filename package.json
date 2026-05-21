@@ -1,0 +1,10 @@
+{
+  "name": "double-ducky",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Double Ducky — a rubber-duck-themed poker variant. Single-file static site.",
+  "scripts": {
+    "dev": "npx --yes serve@latest -l 5173 .",
+    "build": "echo \"No build step — static HTML\" && exit 0"
+  }
+}

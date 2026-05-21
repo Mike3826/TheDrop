@@ -3,7 +3,14 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>All In Max Out — Vegas Infinite</title>
+<meta name="description" content="Double Ducky — a rubber-duck-themed poker variant from Vegas Infinite. Bid, pick, arrange 5/3/1, and chase royalties."/>
+<meta name="theme-color" content="#050508"/>
+<meta name="color-scheme" content="dark"/>
+<meta property="og:title" content="Double Ducky — Vegas Infinite"/>
+<meta property="og:description" content="A rubber-duck-themed poker variant. Bid, pick, arrange 5/3/1, and chase royalties."/>
+<meta property="og:type" content="website"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='32' cy='42' rx='22' ry='16' fill='%23FFD700' stroke='%23E6A000' stroke-width='1.5'/%3E%3Ccircle cx='44' cy='26' r='12' fill='%23FFD700' stroke='%23E6A000' stroke-width='1.5'/%3E%3Cellipse cx='56' cy='28' rx='8' ry='5' fill='%23FF8C00' stroke='%23E06000' stroke-width='1'/%3E%3Ccircle cx='48' cy='22' r='2.5' fill='%23111'/%3E%3Ccircle cx='49' cy='21' r='0.8' fill='white'/%3E%3Cellipse cx='24' cy='40' rx='10' ry='6' fill='%23FFC500' opacity='0.7'/%3E%3C/svg%3E"/>
+<title>Double Ducky — Vegas Infinite</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap');
 
@@ -52,7 +59,7 @@ body{
 /* ── Header ── */
 .header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 0}
 .header-left{display:flex;align-items:center;gap:10px;min-width:120px}
-.header-right{min-width:200px;display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-wrap:wrap}
+.header-right{min-width:120px;display:flex;justify-content:flex-end;align-items:center;gap:8px}
 
 h1{
   font-family:'Barlow Condensed',sans-serif;
@@ -82,90 +89,6 @@ h1{
   transition:background 0.15s;
 }
 .mute-btn:hover{background:rgba(255,255,255,0.12)}
-.hdr-btn{
-  background:rgba(252,107,35,0.12);
-  border:1px solid rgba(252,107,35,0.4);
-  border-radius:6px;padding:6px 14px;
-  font-size:13px;font-weight:700;
-  font-family:'Barlow Condensed',sans-serif;
-  color:var(--vi-orange);cursor:pointer;
-  letter-spacing:1px;text-transform:uppercase;
-  transition:background 0.15s,border-color 0.15s;
-}
-.hdr-btn:hover{background:rgba(252,107,35,0.28);border-color:rgba(252,107,35,0.7);color:var(--vi-yellow)}
-
-.info-overlay{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,0.92);
-  display:flex;align-items:center;justify-content:center;
-  z-index:300;
-}
-.info-modal{
-  background:#0c0c18;
-  border:2px solid rgba(252,107,35,0.5);
-  border-radius:16px;
-  width:min(640px,96vw);
-  max-height:86vh;
-  display:flex;flex-direction:column;
-  box-shadow:0 0 60px rgba(252,107,35,0.15),0 0 120px rgba(149,0,198,0.1);
-}
-.info-modal-hdr{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:18px 24px 14px;
-  border-bottom:1px solid rgba(252,107,35,0.2);
-  flex-shrink:0;
-}
-.info-modal-hdr h2{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:24px;font-weight:900;
-  color:var(--vi-orange);letter-spacing:3px;text-transform:uppercase;
-}
-.close-btn{
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.2);
-  border-radius:6px;padding:5px 12px;
-  font-size:16px;color:var(--vi-cream);cursor:pointer;
-  transition:background 0.15s;font-family:inherit;
-}
-.close-btn:hover{background:rgba(255,255,255,0.15)}
-.info-modal-body{
-  overflow-y:auto;padding:20px 24px 24px;
-  display:flex;flex-direction:column;gap:20px;
-  scrollbar-width:thin;scrollbar-color:rgba(252,107,35,0.2) transparent;
-}
-.rule-block h3{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:17px;font-weight:900;
-  color:var(--vi-cyan);letter-spacing:2px;
-  text-transform:uppercase;margin-bottom:8px;
-}
-.rule-block p{font-size:14px;color:var(--vi-cream);line-height:1.7;margin-bottom:6px;opacity:0.9}
-.rule-block ul{padding-left:18px;display:flex;flex-direction:column;gap:5px}
-.rule-block li{font-size:14px;color:var(--vi-cream);line-height:1.6;opacity:0.9}
-.rule-block strong{color:var(--vi-yellow);font-weight:700}
-
-.royalty-table{display:flex;flex-direction:column;gap:3px;border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden}
-.royalty-hdr{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:8px 16px;
-  background:rgba(255,255,255,0.05);
-  font-size:11px;color:var(--vi-amber);
-  font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  font-family:'Barlow Condensed',sans-serif;
-}
-.royalty-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:10px 16px;
-  border-top:1px solid rgba(255,255,255,0.05);
-  font-size:15px;
-}
-.royalty-row .rhand{color:var(--vi-cream);font-weight:600}
-.royalty-row .rpay{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;letter-spacing:1px}
-.r-mega{background:rgba(245,209,106,0.1)}.r-mega .rpay{color:var(--vi-yellow)}
-.r-high{background:rgba(252,107,35,0.08)}.r-high .rpay{color:var(--vi-orange)}
-.r-mid{background:rgba(251,0,159,0.08)}.r-mid .rpay{color:var(--vi-pink)}
-.r-low{background:rgba(42,254,255,0.06)}.r-low .rpay{color:var(--vi-cyan)}
-.royalty-note{font-size:13px;color:rgba(251,244,219,0.6);font-style:italic;margin-top:4px}
 
 /* ── Table Grid ── */
 .table-grid{
@@ -243,7 +166,7 @@ h1{
   font-family:'Barlow Condensed',sans-serif;font-weight:900;
   letter-spacing:1px;
 }
-.card-face-down::after{content:'VI'}
+
 
 /* ── Bid list ── */
 .bid-list{display:flex;flex-direction:column;gap:2px;width:100%}
@@ -334,10 +257,7 @@ h1{
 .card .cr{font-size:inherit}
 .card .cs{font-size:calc(var(--cs-size, 1em) * 1.1)}
 
-.card.card-back{
-  background:linear-gradient(135deg,#0c0c20 0%,#1a0a35 40%,#0c1540 100%);
-  border-color:rgba(42,254,255,0.5);
-}
+/* card-back styled via ducky CSS below */
 .card.selected{
   border:2px solid var(--vi-cyan);
   box-shadow:0 0 16px rgba(42,254,255,0.6);
@@ -516,13 +436,99 @@ button:disabled{opacity:0.3;cursor:not-allowed;transform:none}
 .delta-pos{color:#4dff9a;font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:19px}
 .delta-neg{color:var(--vi-red);font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:19px}
 .result-btns{display:flex;justify-content:center;gap:10px;margin-top:14px}
+
+/* ── Ducky Mascot ── */
+.ducky-mascot{
+  display:flex;flex-direction:column;align-items:center;
+  font-size:52px;line-height:1;
+  filter:drop-shadow(0 0 12px rgba(253,224,84,0.7));
+  animation:ducky-bob 2s ease-in-out infinite;
+  user-select:none;cursor:default;
+}
+@keyframes ducky-bob{
+  0%,100%{transform:translateY(0) rotate(-3deg);}
+  50%{transform:translateY(-8px) rotate(3deg);}
+}
+.ducky-mascot-sm{
+  font-size:32px;animation:ducky-bob 2.2s ease-in-out infinite;
+  filter:drop-shadow(0 0 8px rgba(253,224,84,0.5));
+}
+.ducky-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:900;letter-spacing:2px;
+  color:var(--vi-yellow);text-transform:uppercase;margin-top:2px;
+  text-shadow:0 0 8px rgba(253,224,84,0.6);
+}
+
+/* Card back ducky style */
+.card.card-back{position:relative;
+  background:linear-gradient(135deg,#0c0c20 0%,#1a0a35 40%,#0c1540 100%);
+  border-color:rgba(253,224,84,0.6);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+}
+
+/* Card face-down center piece */
+.card-face-down{
+  width:54px;height:74px;border-radius:6px;
+  background:linear-gradient(135deg,#0c0c20,#1a0a35,#0c1540);
+  border:2px solid rgba(253,224,84,0.5);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:26px;
+  filter:drop-shadow(0 0 8px rgba(253,224,84,0.4));
+}
+
+/* Suit color overrides on card */
+
+
+
+/* ── Rubber Duck SVG ── */
+.rduck {
+  display:inline-block;
+  width:1em;height:1em;
+  background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPCEtLSBCb2R5IC0tPgogIDxlbGxpcHNlIGN4PSczMicgY3k9JzQyJyByeD0nMjInIHJ5PScxNicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gSGVhZCAtLT4KICA8Y2lyY2xlIGN4PSc0NCcgY3k9JzI2JyByPScxMicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gQmlsbCAtLT4KICA8ZWxsaXBzZSBjeD0nNTYnIGN5PScyOCcgcng9JzgnIHJ5PSc1JyBmaWxsPScjRkY4QzAwJyBzdHJva2U9JyNFMDYwMDAnIHN0cm9rZS13aWR0aD0nMScvPgogIDwhLS0gRXllIC0tPgogIDxjaXJjbGUgY3g9JzQ4JyBjeT0nMjInIHI9JzIuNScgZmlsbD0nIzExMScvPgogIDxjaXJjbGUgY3g9JzQ5JyBjeT0nMjEnIHI9JzAuOCcgZmlsbD0nd2hpdGUnLz4KICA8IS0tIFdpbmcgaGludCAtLT4KICA8ZWxsaXBzZSBjeD0nMjQnIGN5PSc0MCcgcng9JzEwJyByeT0nNicgZmlsbD0nI0ZGQzUwMCcgb3BhY2l0eT0nMC43Jy8+Cjwvc3ZnPg==") center/contain no-repeat;
+  vertical-align:middle;
+}
+.rduck-lg {
+  display:inline-block;
+  width:52px;height:52px;
+  background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPCEtLSBCb2R5IC0tPgogIDxlbGxpcHNlIGN4PSczMicgY3k9JzQyJyByeD0nMjInIHJ5PScxNicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gSGVhZCAtLT4KICA8Y2lyY2xlIGN4PSc0NCcgY3k9JzI2JyByPScxMicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gQmlsbCAtLT4KICA8ZWxsaXBzZSBjeD0nNTYnIGN5PScyOCcgcng9JzgnIHJ5PSc1JyBmaWxsPScjRkY4QzAwJyBzdHJva2U9JyNFMDYwMDAnIHN0cm9rZS13aWR0aD0nMScvPgogIDwhLS0gRXllIC0tPgogIDxjaXJjbGUgY3g9JzQ4JyBjeT0nMjInIHI9JzIuNScgZmlsbD0nIzExMScvPgogIDxjaXJjbGUgY3g9JzQ5JyBjeT0nMjEnIHI9JzAuOCcgZmlsbD0nd2hpdGUnLz4KICA8IS0tIFdpbmcgaGludCAtLT4KICA8ZWxsaXBzZSBjeD0nMjQnIGN5PSc0MCcgcng9JzEwJyByeT0nNicgZmlsbD0nI0ZGQzUwMCcgb3BhY2l0eT0nMC43Jy8+Cjwvc3ZnPg==") center/contain no-repeat;
+  animation:ducky-bob 2s ease-in-out infinite;
+  filter:drop-shadow(0 0 10px rgba(255,215,0,0.7));
+}
+.rduck-md {
+  display:inline-block;
+  width:32px;height:32px;
+  background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPCEtLSBCb2R5IC0tPgogIDxlbGxpcHNlIGN4PSczMicgY3k9JzQyJyByeD0nMjInIHJ5PScxNicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gSGVhZCAtLT4KICA8Y2lyY2xlIGN4PSc0NCcgY3k9JzI2JyByPScxMicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gQmlsbCAtLT4KICA8ZWxsaXBzZSBjeD0nNTYnIGN5PScyOCcgcng9JzgnIHJ5PSc1JyBmaWxsPScjRkY4QzAwJyBzdHJva2U9JyNFMDYwMDAnIHN0cm9rZS13aWR0aD0nMScvPgogIDwhLS0gRXllIC0tPgogIDxjaXJjbGUgY3g9JzQ4JyBjeT0nMjInIHI9JzIuNScgZmlsbD0nIzExMScvPgogIDxjaXJjbGUgY3g9JzQ5JyBjeT0nMjEnIHI9JzAuOCcgZmlsbD0nd2hpdGUnLz4KICA8IS0tIFdpbmcgaGludCAtLT4KICA8ZWxsaXBzZSBjeD0nMjQnIGN5PSc0MCcgcng9JzEwJyByeT0nNicgZmlsbD0nI0ZGQzUwMCcgb3BhY2l0eT0nMC43Jy8+Cjwvc3ZnPg==") center/contain no-repeat;
+  filter:drop-shadow(0 0 6px rgba(255,215,0,0.5));
+}
+.rduck-sm {
+  display:inline-block;
+  width:20px;height:20px;
+  background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPCEtLSBCb2R5IC0tPgogIDxlbGxpcHNlIGN4PSczMicgY3k9JzQyJyByeD0nMjInIHJ5PScxNicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gSGVhZCAtLT4KICA8Y2lyY2xlIGN4PSc0NCcgY3k9JzI2JyByPScxMicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gQmlsbCAtLT4KICA8ZWxsaXBzZSBjeD0nNTYnIGN5PScyOCcgcng9JzgnIHJ5PSc1JyBmaWxsPScjRkY4QzAwJyBzdHJva2U9JyNFMDYwMDAnIHN0cm9rZS13aWR0aD0nMScvPgogIDwhLS0gRXllIC0tPgogIDxjaXJjbGUgY3g9JzQ4JyBjeT0nMjInIHI9JzIuNScgZmlsbD0nIzExMScvPgogIDxjaXJjbGUgY3g9JzQ5JyBjeT0nMjEnIHI9JzAuOCcgZmlsbD0nd2hpdGUnLz4KICA8IS0tIFdpbmcgaGludCAtLT4KICA8ZWxsaXBzZSBjeD0nMjQnIGN5PSc0MCcgcng9JzEwJyByeT0nNicgZmlsbD0nI0ZGQzUwMCcgb3BhY2l0eT0nMC43Jy8+Cjwvc3ZnPg==") center/contain no-repeat;
+  vertical-align:middle;
+}
+.rduck-suit {
+  display:inline-block;
+  background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPCEtLSBCb2R5IC0tPgogIDxlbGxpcHNlIGN4PSczMicgY3k9JzQyJyByeD0nMjInIHJ5PScxNicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gSGVhZCAtLT4KICA8Y2lyY2xlIGN4PSc0NCcgY3k9JzI2JyByPScxMicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gQmlsbCAtLT4KICA8ZWxsaXBzZSBjeD0nNTYnIGN5PScyOCcgcng9JzgnIHJ5PSc1JyBmaWxsPScjRkY4QzAwJyBzdHJva2U9JyNFMDYwMDAnIHN0cm9rZS13aWR0aD0nMScvPgogIDwhLS0gRXllIC0tPgogIDxjaXJjbGUgY3g9JzQ4JyBjeT0nMjInIHI9JzIuNScgZmlsbD0nIzExMScvPgogIDxjaXJjbGUgY3g9JzQ5JyBjeT0nMjEnIHI9JzAuOCcgZmlsbD0nd2hpdGUnLz4KICA8IS0tIFdpbmcgaGludCAtLT4KICA8ZWxsaXBzZSBjeD0nMjQnIGN5PSc0MCcgcng9JzEwJyByeT0nNicgZmlsbD0nI0ZGQzUwMCcgb3BhY2l0eT0nMC43Jy8+Cjwvc3ZnPg==") center/contain no-repeat;
+  vertical-align:middle;
+  line-height:1;
+}
+.card-back-duck {
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:60%;height:60%;
+  background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPCEtLSBCb2R5IC0tPgogIDxlbGxpcHNlIGN4PSczMicgY3k9JzQyJyByeD0nMjInIHJ5PScxNicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gSGVhZCAtLT4KICA8Y2lyY2xlIGN4PSc0NCcgY3k9JzI2JyByPScxMicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gQmlsbCAtLT4KICA8ZWxsaXBzZSBjeD0nNTYnIGN5PScyOCcgcng9JzgnIHJ5PSc1JyBmaWxsPScjRkY4QzAwJyBzdHJva2U9JyNFMDYwMDAnIHN0cm9rZS13aWR0aD0nMScvPgogIDwhLS0gRXllIC0tPgogIDxjaXJjbGUgY3g9JzQ4JyBjeT0nMjInIHI9JzIuNScgZmlsbD0nIzExMScvPgogIDxjaXJjbGUgY3g9JzQ5JyBjeT0nMjEnIHI9JzAuOCcgZmlsbD0nd2hpdGUnLz4KICA8IS0tIFdpbmcgaGludCAtLT4KICA8ZWxsaXBzZSBjeD0nMjQnIGN5PSc0MCcgcng9JzEwJyByeT0nNicgZmlsbD0nI0ZGQzUwMCcgb3BhY2l0eT0nMC43Jy8+Cjwvc3ZnPg==") center/contain no-repeat;
+  opacity:0.9;
+}
+
 </style>
 </head>
 <body>
 <div id="root"><div class="loading">Shuffling the deck…</div></div>
 
-<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
 
 <script>
 // ── Sound Engine ──────────────────────────────────────────────────────────────
@@ -555,11 +561,25 @@ var useEffect=React.useEffect;
 var useRef=React.useRef;
 
 var RANKS=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
-var SUITS=['\u2660','\u2665','\u2666','\u2663'];
+
+// Rubber duck helper
+function duck(size){
+  var cls = size==='lg'?'rduck-lg':size==='md'?'rduck-md':size==='sm'?'rduck-sm':'rduck';
+  return h('span',{className:cls,'aria-label':'rubber duck'});
+}
+function duckSuit(color){
+  var style={display:'block',width:'60%',paddingTop:'60%',backgroundSize:'contain',backgroundRepeat:'no-repeat',backgroundPosition:'center',filter:'none',margin:'2px auto 0'};
+  style.filter = color==='red'?'sepia(1) saturate(4) hue-rotate(300deg)':
+                 color==='orange'?'sepia(1) saturate(3) hue-rotate(340deg)':
+                 color==='green'?'sepia(1) saturate(3) hue-rotate(80deg) brightness(0.85)':'grayscale(1) brightness(0.15)';
+  return h('span',{className:'rduck-suit',style:Object.assign({},style,{backgroundImage:"url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPCEtLSBCb2R5IC0tPgogIDxlbGxpcHNlIGN4PSczMicgY3k9JzQyJyByeD0nMjInIHJ5PScxNicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gSGVhZCAtLT4KICA8Y2lyY2xlIGN4PSc0NCcgY3k9JzI2JyByPScxMicgZmlsbD0nI0ZGRDcwMCcgc3Ryb2tlPScjRTZBMDAwJyBzdHJva2Utd2lkdGg9JzEuNScvPgogIDwhLS0gQmlsbCAtLT4KICA8ZWxsaXBzZSBjeD0nNTYnIGN5PScyOCcgcng9JzgnIHJ5PSc1JyBmaWxsPScjRkY4QzAwJyBzdHJva2U9JyNFMDYwMDAnIHN0cm9rZS13aWR0aD0nMScvPgogIDwhLS0gRXllIC0tPgogIDxjaXJjbGUgY3g9JzQ4JyBjeT0nMjInIHI9JzIuNScgZmlsbD0nIzExMScvPgogIDxjaXJjbGUgY3g9JzQ5JyBjeT0nMjEnIHI9JzAuOCcgZmlsbD0nd2hpdGUnLz4KICA8IS0tIFdpbmcgaGludCAtLT4KICA8ZWxsaXBzZSBjeD0nMjQnIGN5PSc0MCcgcng9JzEwJyByeT0nNicgZmlsbD0nI0ZGQzUwMCcgb3BhY2l0eT0nMC43Jy8+Cjwvc3ZnPg==')"}), 'aria-label':'duck suit'});
+}
+
+var SUITS=['🦆S','🦆H','🦆D','🦆C'];
 var RANK_VAL={};RANKS.forEach(function(r,i){RANK_VAL[r]=i+2;});
 function makeDeck(){var d=[];SUITS.forEach(function(s){RANKS.forEach(function(r){d.push({rank:r,suit:s});});});return d;}
 function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-function isRed(c){return c.suit==='\u2665'||c.suit==='\u2666';}
+function isRed(c){return c.suit==='🦆H'||c.suit==='🦆D';}
 function ckey(c){return c.rank+c.suit;}
 function rv(r){return RANK_VAL[r];}
 
@@ -655,9 +675,9 @@ function dealHand(base){
 
 // Card sizes: lg, md, sm
 var CARD_SIZES={
-  lg:{w:64,h:88,rf:22,sf:26},
-  md:{w:54,h:74,rf:19,sf:22},
-  sm:{w:44,h:60,rf:16,sf:19}
+  lg:{w:64,h:90,rf:14,sf:16},
+  md:{w:52,h:72,rf:12,sf:14},
+  sm:{w:40,h:56,rf:10,sf:12}
 };
 
 function Card(props){
@@ -669,14 +689,21 @@ function Card(props){
   if(back)cls.push('card-back');else cls.push(isRed(card)?'red':'black');
   if(selected)cls.push('selected');
   if(clickable)cls.push('clickable');
+  var suitColor=card.back?'black':card.suit==='🦆H'?'red':card.suit==='🦆D'?'orange':card.suit==='🦆C'?'green':'black';
   return h('div',{
     className:cls.join(' '),
-    style:{width:d.w,height:d.h},
+    style:{width:d.w,height:d.h,flexDirection:'column',justifyContent:'space-between',padding:'3px 3px 3px',overflow:'hidden'},
     onClick:clickable?onClick:undefined
   },
+    back&&h('span',{className:'card-back-duck','aria-label':'rubber duck'}),
     !back&&[
-      h('span',{key:'r',className:'cr',style:{fontSize:d.rf+'px',fontWeight:900,lineHeight:1}},card.rank),
-      h('span',{key:'s',className:'cs',style:{fontSize:d.sf+'px',lineHeight:1}},card.suit)
+      h('div',{key:'top',style:{display:'flex',flexDirection:'column',alignItems:'flex-start',lineHeight:1}},
+        h('span',{className:'cr',style:{fontSize:d.rf+'px',fontWeight:900,lineHeight:1,color:suitColor==='red'?'#cc0000':suitColor==='orange'?'#dd5500':suitColor==='green'?'#2a7a2a':'#0a0a1a'}},card.rank)
+      ),
+      duckSuit(suitColor),
+      h('div',{key:'bot',style:{display:'flex',flexDirection:'column',alignItems:'flex-end',lineHeight:1,transform:'rotate(180deg)'}},
+        h('span',{className:'cr',style:{fontSize:d.rf+'px',fontWeight:900,lineHeight:1,color:suitColor==='red'?'#cc0000':suitColor==='orange'?'#dd5500':suitColor==='green'?'#2a7a2a':'#0a0a1a'}},card.rank)
+      )
     ]
   );
 }
@@ -704,7 +731,7 @@ function Seat(props){
     cardSection=h('div',{className:'card-row'+(isHuman?' human-cards':'')},
       player.hand.map(function(c){
         var canDiscard=isHuman&&aimoDiscard;
-        return h(Card,{key:ckey(c),card:showCards?c:{back:true,suit:'\u2660',rank:'?'},size:cardSize,clickable:canDiscard,onClick:canDiscard?function(){onDiscard(c);}:undefined});
+        return h(Card,{key:ckey(c),card:showCards?c:{back:true,suit:'🦆S',rank:'?'},size:cardSize,clickable:canDiscard,onClick:canDiscard?function(){onDiscard(c);}:undefined});
       })
     );
   }
@@ -720,8 +747,8 @@ function Seat(props){
         player.eliminated&&h('span',{className:'elim-tag'},'OUT')
       ),
       h('div',{className:'seat-bank'},'$'+player.bankroll.toLocaleString()),
-      bid&&game.bidPhase==='revealed'&&h('div',{className:'seat-bid'},'$'+bid.bid,bid.aimo&&h('span',{className:'aimo-pill'},'AIMO')),
-      isCurTurn&&!isHuman&&h('div',{className:'thinking-dot'},'●●●')
+      bid&&game.bidPhase==='revealed'&&h('div',{className:'seat-bid'},'$'+bid.bid,bid.aimo&&h('span',{className:'aimo-pill'},'DD')),
+      isCurTurn&&!isHuman&&h('div',{className:'thinking-dot',style:{display:'flex',alignItems:'center',gap:'4px'}},h('span',{className:'rduck-sm','aria-label':'duck'}),'thinking…')
     ),
     cardSection
   );
@@ -737,8 +764,6 @@ function App(){
   var errS=useState('');var arrErr=errS[0];var setArrErr=errS[1];
   var resS=useState(null);var result=resS[0];var setResult=resS[1];
   var mutS=useState(false);var muted=mutS[0];var setMuted=mutS[1];
-  var rulesS=useState(false);var showRules=rulesS[0];var setShowRules=rulesS[1];
-  var royS=useState(false);var showRoy=royS[0];var setShowRoy=royS[1];
   var mutedRef=useRef(false);
 
   function sfx(fn){if(!mutedRef.current){try{fn();}catch(e){}}}
@@ -802,7 +827,7 @@ function App(){
           var disc=nh[wi];
           var np2=g.players.slice();np2[pid]=Object.assign({},np2[pid],{hand:nh.filter(function(_,i){return i!==wi;})});g.players=np2;
           g.communityCards=rest2.concat([disc]);
-          g=addLog(g,player.name+' ALL IN MAX OUT — picks '+picks.map(function(c){return c.rank+c.suit;}).join(', ')+', returns '+disc.rank+disc.suit,'royalty');
+          g=addLog(g,player.name+' DOUBLE DUCKY — picks '+picks.map(function(c){return c.rank+c.suit;}).join(', ')+', returns '+disc.rank+disc.suit,'royalty');
         }else if(g.communityCards.length>0){
           sfx(SFX.cardPick);
           var pick=g.communityCards[0];g.communityCards=g.communityCards.slice(1);
@@ -819,7 +844,7 @@ function App(){
     var cost=humanBid+(humanAIMO?200:0);
     if(cost>game.players[0].bankroll){alert('Not enough chips!');return;}
     sfx(SFX.bidSubmit);sfx(SFX.chipsIn);
-    setGame(function(prev){return addLog(Object.assign({},prev,{bids:Object.assign({},prev.bids,{0:{bid:humanBid,aimo:humanAIMO}})}), 'You bid $'+humanBid+(humanAIMO?' + AIMO':''),'event');});
+    setGame(function(prev){return addLog(Object.assign({},prev,{bids:Object.assign({},prev.bids,{0:{bid:humanBid,aimo:humanAIMO}})}), 'You bid $'+humanBid+(humanAIMO?' + DD':''),'event');});
     setBidSubmitted(true);
   }
 
@@ -832,11 +857,11 @@ function App(){
         sfx(SFX.aimo);var cost=bid.bid+200;
         var np=g.players.slice();np[0]=Object.assign({},np[0],{bankroll:np[0].bankroll-cost,hand:np[0].hand.concat([commSel])});g.players=np;
         g.pot+=cost;g.communityCards=g.communityCards.filter(function(c){return ckey(c)!==ckey(commSel);});
-        g.aimoPickStep=0.5;g=addLog(g,'You pick '+commSel.rank+commSel.suit+' (AIMO 1st) — select 2nd','event');
+        g.aimoPickStep=0.5;g=addLog(g,'You pick '+commSel.rank+commSel.suit+' (Double Ducky 1st) — select 2nd','event');
       }else if(bid.aimo&&g.aimoPickStep===0.5){
         var np2=g.players.slice();np2[0]=Object.assign({},np2[0],{hand:np2[0].hand.concat([commSel])});g.players=np2;
         g.communityCards=g.communityCards.filter(function(c){return ckey(c)!==ckey(commSel);});
-        g.aimoPickStep=1;g=addLog(g,'You pick '+commSel.rank+commSel.suit+' (AIMO 2nd) — now discard','event');
+        g.aimoPickStep=1;g=addLog(g,'You pick '+commSel.rank+commSel.suit+' (Double Ducky 2nd) — now discard','event');
       }else{
         var np3=g.players.slice();np3[0]=Object.assign({},np3[0],{bankroll:np3[0].bankroll-bid.bid,hand:np3[0].hand.concat([commSel])});g.players=np3;
         g.pot+=bid.bid;g.communityCards=g.communityCards.filter(function(c){return ckey(c)!==ckey(commSel);});
@@ -929,7 +954,7 @@ function App(){
     sfx(SFX.shuffle);setGame(dealHand(newGameState()));
   }
 
-  if(!game)return h('div',{className:'felt loading'},'Shuffling the deck…');
+  if(!game)return h('div',{className:'felt loading'},h('span',{className:'rduck-lg',style:{display:'block',width:'70px',height:'70px',margin:'0 auto',animation:'ducky-bob 1s ease-in-out infinite'},'aria-label':'rubber duck'}),h('span',{style:{display:'block',marginTop:'12px'}},'Shuffling the deck…'));
 
   var human=game.players[0];
   var isHumanTurn=game.phase==='bid'&&game.bidPhase==='revealed'&&game.turnOrder.length>0&&game.turnOrder[game.currentTurnIndex]===0;
@@ -938,7 +963,7 @@ function App(){
 
   var phaseDesc='';
   if(game.phase==='bid'&&game.bidPhase==='entering')phaseDesc='Round '+(game.round+1)+' of 4 — Place Your Bids';
-  else if(game.phase==='bid'&&game.bidPhase==='revealed'&&isHumanTurn&&game.aimoPickStep===1)phaseDesc='All In Max Out — Click your card to discard it back';
+  else if(game.phase==='bid'&&game.bidPhase==='revealed'&&isHumanTurn&&game.aimoPickStep===1)phaseDesc='Double Ducky — Click your hand card to discard back';
   else if(game.phase==='bid'&&game.bidPhase==='revealed'&&isHumanTurn)phaseDesc='Your turn — select a community card';
   else if(game.phase==='bid'&&game.bidPhase==='revealed')phaseDesc='Processing picks…';
   else if(game.phase==='arrange')phaseDesc='Planning Phase — Arrange Your 9 Cards';
@@ -953,10 +978,12 @@ function App(){
           [0,1,2,3].map(function(i){return h('div',{key:i,className:'pip'+(i<game.round?' pip-done':i===game.round?' pip-cur':'')});})
         )
       ),
-      h('h1',null,'All In Max Out'),
+      h('div',{style:{display:'flex',alignItems:'center',gap:'8px',justifyContent:'center'}},
+        h('span',{className:'rduck-lg','aria-label':'rubber duck'}),
+        h('h1',null,'Double Ducky'),
+        h('span',{className:'rduck-lg',style:{animationDelay:'0.5s'},'aria-label':'rubber duck'})
+      ),
       h('div',{className:'header-right'},
-        h('button',{className:'hdr-btn',onClick:function(){setShowRules(true);},'aria-label':'Rules'},'Rules'),
-        h('button',{className:'hdr-btn',onClick:function(){setShowRoy(true);},'aria-label':'Royalties'},'Royalties'),
         h('button',{className:'mute-btn',onClick:toggleMute},muted?'🔇':'🔊')
       )
     ),
@@ -969,13 +996,15 @@ function App(){
       h('div',{className:'poker-table'},
         h('div',{className:'table-center'},
           h('div',{className:'pot-box'},
+            h('span',{className:'rduck-sm','aria-label':'rubber duck'}),
             h('span',{className:'pot-label'},'POT'),
-            h('span',{className:'pot-amt'},'$'+game.pot.toLocaleString())
+            h('span',{className:'pot-amt'},'$'+game.pot.toLocaleString()),
+            h('span',{className:'rduck-sm','aria-label':'rubber duck'})
           ),
           h('div',{className:'community-area'},
             h('div',{className:'mystery-stack'},
               h('div',{className:'zone-lbl'},'Mystery'),
-              game.phase==='showdown'&&result?h(Card,{card:game.faceDownCard,size:'md'}):h('div',{className:'card-face-down'})
+              game.phase==='showdown'&&result?h(Card,{card:game.faceDownCard,size:'md'}):h('div',{className:'card-face-down',style:{position:'relative'}},h('span',{className:'card-back-duck','aria-label':'rubber duck'}))
             ),
             h('div',{className:'comm-stack'},
               h('div',{className:'zone-lbl'},'Community'),
@@ -996,13 +1025,13 @@ function App(){
               var done=idx<game.currentTurnIndex,cur=idx===game.currentTurnIndex;
               return h('div',{key:pid,className:'bid-row'+(done?' bid-done':cur?' bid-cur':'')},
                 h('span',{className:'bid-who'},(cur?'▶ ':done?'✓ ':'')+p.name),
-                b.aimo&&h('span',{className:'aimo-pill'},'AIMO'),
+                b.aimo&&h('span',{className:'aimo-pill'},'DD'),
                 h('span',{className:'bid-amt'},'$'+b.bid+(b.aimo?'+$200':''))
               );
             })
           ),
           isHumanTurn&&game.aimoPickStep!==1&&commSel&&h('div',{className:'pick-btns'},
-            h('button',{className:'btn-gold',onClick:confirmPick},game.aimoPickStep===0.5?'Take 2nd Card':hBid.aimo?'Take 1st (AIMO)':'Take Card'),
+            h('button',{className:'btn-gold',onClick:confirmPick},game.aimoPickStep===0.5?'Take 2nd Card':hBid.aimo?'Take 1st (DD)':'Take Card'),
             h('button',{className:'btn-ghost',onClick:function(){setCommSel(null);}},'Cancel')
           )
         )
@@ -1018,7 +1047,7 @@ function App(){
 
     h('div',{className:'panels-row'},
       game.phase==='bid'&&game.bidPhase==='entering'&&!bidSubmitted&&h('div',{className:'bid-panel'},
-        h('div',{className:'bid-panel-title'},'Place Your Bid'),
+        h('div',{className:'bid-panel-title',style:{display:'flex',alignItems:'center',gap:'8px'}},h('span',{className:'rduck-sm','aria-label':'duck'}),'Place Your Bid'),
         h('div',{className:'slider-row'},
           h('label',null,'Bid'),
           h('input',{type:'range',min:0,max:100,step:5,value:humanBid,onChange:function(e){setHumanBid(+e.target.value);sfx(SFX.chip);}}),
@@ -1026,7 +1055,7 @@ function App(){
         ),
         h('div',{className:'aimo-row'+(humanAIMO?' aimo-on':''),onClick:function(){setHumanAIMO(function(v){return!v;});}},
           h('input',{type:'checkbox',checked:humanAIMO,readOnly:true}),
-          h('span',{className:'aimo-label'},'All In Max Out'),
+          h('span',{className:'aimo-label'},'Double Ducky'),
           h('span',{className:'aimo-sub'},'+$200 · take 2, discard 1 back')
         ),
         h('div',{className:'cost-line'},'Total: ',h('b',null,'$'+totalCost),' · Chips: ',h('b',null,'$'+human.bankroll.toLocaleString())),
@@ -1074,7 +1103,7 @@ function App(){
 
     result&&h('div',{className:'overlay'},
       h('div',{className:'result-modal'},
-        h('h2',null,'Hand #'+game.handNumber+' Results'),
+        h('h2',{style:{display:'flex',alignItems:'center',justifyContent:'center',gap:'10px'}},h('span',{className:'rduck-md','aria-label':'duck'}),'Hand #'+game.handNumber+' Results',h('span',{className:'rduck-md','aria-label':'duck'})),
         h('div',{className:'mystery-reveal'},
           h('div',{className:'mystery-reveal-label'},'Mystery Card Revealed'),
           h(Card,{card:result.fdc,size:'lg'})
@@ -1100,102 +1129,7 @@ function App(){
       )
     )
 
-    showRules&&h('div',{className:'info-overlay',onClick:function(){setShowRules(false);}},
-      h('div',{className:'info-modal',onClick:function(e){e.stopPropagation();}},
-        h('div',{className:'info-modal-hdr'},
-          h('h2',null,'Game Rules'),
-          h('button',{className:'close-btn',onClick:function(){setShowRules(false);}},'✕')
-        ),
-        h('div',{className:'info-modal-body'},
-          h('div',{className:'rule-block'},
-            h('h3',null,'Setup'),
-            h('p',null,'4 players each start with ',h('strong',null,'$2,000'),'. The dealer button is randomly assigned and rotates left after every hand. A single face-down ',h('strong',null,'mystery card'),' is drawn and placed in the center at the start of each hand.')
-          ),
-          h('div',{className:'rule-block'},
-            h('h3',null,'Community Phase — 4 Rounds'),
-            h('p',null,'Each round, ',h('strong',null,'4 community cards'),' are revealed face-up. All players simultaneously place a ',h('strong',null,'silent bid of $0–$100'),'. Bids are then revealed.'),
-            h('p',null,'Players pick one card from the community in order from ',h('strong',null,'highest bid to lowest'),'. Ties are broken by poker seat order (left of dealer first).'),
-            h('p',null,'After 4 rounds, each player holds ',h('strong',null,'9 cards'),' total.')
-          ),
-          h('div',{className:'rule-block'},
-            h('h3',null,'All In Max Out (AIMO)'),
-            h('p',null,'On top of your regular bid, pay an extra ',h('strong',null,'$200'),' to go All In Max Out. AIMO bidders pick ',h('strong',null,'before'),' all non-AIMO players.'),
-            h('p',null,'Instead of taking 1 card, you ',h('strong',null,'take 2 cards'),' from the community and ',h('strong',null,'return 1 card'),' from your hand back to the community — where others can still take it.'),
-            h('p',null,'If two players both play AIMO, the one with the higher regular bid goes first. Ties resolve by seat order.')
-          ),
-          h('div',{className:'rule-block'},
-            h('h3',null,'Planning Phase'),
-            h('p',null,'Arrange your 9 cards into three hands:'),
-            h('ul',null,
-              h('li',null,h('strong',null,'5-card hand'),' (bottom) — standard poker hand'),
-              h('li',null,h('strong',null,'3-card hand'),' (middle) — 3-card poker hand'),
-              h('li',null,h('strong',null,'1 card'),' (top) — compared against the mystery card')
-            ),
-            h('p',null,h('strong',null,'The 5-card hand must be equal to or stronger than the 3-card hand.'))
-          ),
-          h('div',{className:'rule-block'},
-            h('h3',null,'Showdown'),
-            h('p',null,'The pot is split: ',h('strong',null,'half'),' goes to the best 5-card hand, ',h('strong',null,'half'),' to the best 3-card hand.'),
-            h('p',null,'The mystery card is revealed. Your top card earns a bonus if it matches:'),
-            h('ul',null,
-              h('li',null,h('strong',null,'Same rank'),': +$30'),
-              h('li',null,h('strong',null,'Same suit'),': +$10')
-            )
-          ),
-          h('div',{className:'rule-block'},
-            h('h3',null,'Royalties'),
-            h('p',null,'Certain hands earn royalties paid by ',h('strong',null,'each opponent'),'. See the Royalties reference for the full list.'),
-            h('p',null,'The game continues until a player's bankroll reaches ',h('strong',null,'$0'),'. Last player standing wins.')
-          )
-        )
-      )
-    ),
 
-    showRoy&&h('div',{className:'info-overlay',onClick:function(){setShowRoy(false);}},
-      h('div',{className:'info-modal',onClick:function(e){e.stopPropagation();}},
-        h('div',{className:'info-modal-hdr'},
-          h('h2',null,'Royalties & Bonuses'),
-          h('button',{className:'close-btn',onClick:function(){setShowRoy(false);}},'✕')
-        ),
-        h('div',{className:'info-modal-body'},
-          h('div',{className:'rule-block'},
-            h('h3',null,'5-Card Hand Royalties'),
-            h('p',null,'Paid by ',h('strong',null,'each opponent'),' to you when you make the hand.'),
-            h('div',{className:'royalty-table'},
-              h('div',{className:'royalty-hdr'},h('span',null,'Hand'),h('span',null,'Per Opponent')),
-              h('div',{className:'royalty-row r-mega'},h('span',{className:'rhand'},'♥ Royal Flush'),h('span',{className:'rpay'},'$1,000')),
-              h('div',{className:'royalty-row r-high'},h('span',{className:'rhand'},'♠ Straight Flush'),h('span',{className:'rpay'},'$200')),
-              h('div',{className:'royalty-row'},h('span',{className:'rhand',style:{color:'rgba(251,244,219,0.4)'}},'♦ All other hands'),h('span',{className:'rpay',style:{color:'rgba(251,244,219,0.3)'}},'—'))
-            )
-          ),
-          h('div',{className:'rule-block'},
-            h('h3',null,'3-Card Hand Royalties'),
-            h('p',null,'Paid by ',h('strong',null,'each opponent'),' to you when you make the hand.'),
-            h('div',{className:'royalty-table'},
-              h('div',{className:'royalty-hdr'},h('span',null,'Hand'),h('span',null,'Per Opponent')),
-              h('div',{className:'royalty-row r-mid'},h('span',{className:'rhand'},'♣ Trips (3 of a Kind)'),h('span',{className:'rpay'},'$500')),
-              h('div',{className:'royalty-row'},h('span',{className:'rhand',style:{color:'rgba(251,244,219,0.4)'}},'♥ All other hands'),h('span',{className:'rpay',style:{color:'rgba(251,244,219,0.3)'}},'—'))
-            )
-          ),
-          h('div',{className:'rule-block'},
-            h('h3',null,'Mystery Card Bonuses'),
-            h('p',null,'Your 1-card (top card) is compared against the revealed mystery card after showdown.'),
-            h('div',{className:'royalty-table'},
-              h('div',{className:'royalty-hdr'},h('span',null,'Match'),h('span',null,'Bonus')),
-              h('div',{className:'royalty-row r-high'},h('span',{className:'rhand'},'Same Rank'),h('span',{className:'rpay'},'+$30')),
-              h('div',{className:'royalty-row r-low'},h('span',{className:'rhand'},'Same Suit'),h('span',{className:'rpay'},'+$10'))
-            ),
-            h('p',{className:'royalty-note'},'Rank match pays $30 regardless of suit. Suit match pays $10 only if rank does not also match.')
-          ),
-          h('div',{className:'rule-block'},
-            h('h3',null,'Example Payout'),
-            h('p',null,'You hit a ',h('strong',null,'Royal Flush'),' with 3 opponents still in the hand: you collect ',h('strong',null,'$3,000'),' in royalties ($1,000 × 3).'),
-            h('p',null,'You also hit ',h('strong',null,'Trips'),' in your 3-card hand: another ',h('strong',null,'$1,500'),' ($500 × 3).'),
-            h('p',null,'Combined royalty haul: ',h('strong',null,'$4,500 — in a single hand.'))
-          )
-        )
-      )
-    ),
   );
 }
 
